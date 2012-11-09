@@ -102,6 +102,12 @@
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Components\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="BadGuy.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
@@ -163,6 +169,12 @@
     </ClInclude>
     <ClInclude Include="Geometry.h">
       <Filter>Components\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="BadGuy.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
