@@ -49,6 +49,9 @@
     <Filter Include="Components\Camera">
       <UniqueIdentifier>{04c31a65-dfe5-4bbb-9678-f1fa5f74b35e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\PathFinding">
+      <UniqueIdentifier>{4557e508-f2b0-41d8-aa83-50dd74453298}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -101,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Components\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinderComponent.cpp">
+      <Filter>Components\PathFinding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="Geometry.h">
       <Filter>Components\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinderComponent.h">
+      <Filter>Components\PathFinding</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
