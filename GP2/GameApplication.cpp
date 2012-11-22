@@ -128,7 +128,7 @@ bool CGameApplication::initGame()
 	pCameraGameObject->addComponent(pCamera);
 
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
 
@@ -238,25 +238,37 @@ void CGameApplication::update()
 	{
 		//play sound
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->rotate(m_Timer.getElapsedTime(),0.0f,0.0f);
+		pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime());
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
 	{
 		//play sound
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->rotate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
+		pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-1);
 	}
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
 	{
 		//play sound
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->rotate(0.0f,m_Timer.getElapsedTime(),0.0f);
+		pTransform->translate(m_Timer.getElapsedTime(),0.0f,0.0f);
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
 	{
 		//play sound
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->rotate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
+		pTransform->translate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
+	}
+	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'Q'))
+	{
+		//play sound
+		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
+		pTransform->translate(0.0f,m_Timer.getElapsedTime(),0.0f);
+	}
+	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'E'))
+	{
+		//play sound
+		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
+		pTransform->translate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 
