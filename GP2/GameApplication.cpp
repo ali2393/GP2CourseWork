@@ -94,7 +94,7 @@ bool CGameApplication::initGame()
 	//addMaterial
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setEffectFilename("TESTROOM.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
 	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
