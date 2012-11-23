@@ -7,6 +7,7 @@ CAudioSourceComponent::CAudioSourceComponent()
 	m_bStream=false;
 	m_pChannel=NULL;
 	m_strName="AudioSourceComponent";
+	m_bLoop=0;
 }
 
 CAudioSourceComponent::~CAudioSourceComponent()
@@ -26,8 +27,11 @@ void CAudioSourceComponent::init()
 	
 }
 
+
+
 void CAudioSourceComponent::play()
 {
+
 	//play the sound, we get a channel which can be used to play, stop
 	//pause, control the volume of the sound
 	m_pChannel=CAudioSystem::getInstance().playSound(m_pSound);

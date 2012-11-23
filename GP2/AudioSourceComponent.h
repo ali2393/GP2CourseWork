@@ -34,8 +34,16 @@ public:
 
 	//play
 	void play();
+	
+	//getLoop
+	void getLoopCount(int loopcount)
+	{
+		m_bLoop=loopcount;
+	};
+
 	//stop
 	void stop();
+
 private:
 	string m_strFilename;
 	//The sound we are playing
@@ -43,5 +51,6 @@ private:
 	//channel to control the sound
 	Channel *m_pChannel;
 	bool m_bStream;
+	int m_bLoop;
 
 };

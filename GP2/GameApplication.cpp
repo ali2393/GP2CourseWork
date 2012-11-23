@@ -165,16 +165,19 @@ bool CGameApplication::initGame()
 	CAudioSourceComponent *pBackground1=new CAudioSourceComponent();
 	pBackground1->setFilename("background1.wav");
 	pBackground1->setStream(false);
+	pBackground1->getLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground1);
 
 	CAudioSourceComponent *pBackground2=new CAudioSourceComponent();
-	pBackground1->setFilename("background2.wav");
-	pBackground1->setStream(false);
+	pBackground2->setFilename("background2.wav");
+	pBackground2->setStream(false);
+	pBackground2->getLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground2);
 	
 	CAudioSourceComponent *pBackground3=new CAudioSourceComponent();
-	pBackground1->setFilename("background3.wav");
-	pBackground1->setStream(false);
+	pBackground3->setFilename("background3.wav");
+	pBackground3->setStream(false);
+	pBackground3->getLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground3);
 
 	CAudioListenerComponent *pListener=new CAudioListenerComponent();
@@ -294,6 +297,7 @@ void CGameApplication::update()
 	m_Timer.update();
 
 	CAudioSystem::getInstance().update();
+
 
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{
