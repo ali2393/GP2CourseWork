@@ -94,7 +94,7 @@ bool CGameApplication::initGame()
 	//addMaterial
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("TESTROOM.fx");
+	pMaterial->setEffectFilename("Parallax.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
 	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
@@ -103,7 +103,28 @@ bool CGameApplication::initGame()
 	pTestGameObject->addComponent(pMaterial);
 	//Create Mesh
 	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
-	//CMeshComponent *pMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestGameObject->addComponent(pMesh);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//create game object
+	pTestGameObject=new CGameObject;
+	pTestGameObject->setName("TestRoom");
+	pTestGameObject->getTransform()->setPosition(10.0f,10.0f,10.0f);
+
+	//addMaterial
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
+	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pMaterial->loadBumpTexture("armoredrecon_N.png");
+	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
+	pTestGameObject->addComponent(pMaterial);
+	//Create Mesh
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"TESTROOM.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
@@ -111,7 +132,7 @@ bool CGameApplication::initGame()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	CGameObject *pCameraGameObject=new CGameObject();
-	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
+	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-200.0f);
 	pCameraGameObject->setName("Camera");
 
 	D3D10_VIEWPORT vp;
@@ -139,7 +160,7 @@ bool CGameApplication::initGame()
 	m_pGameObjectManager->addGameObject(pLightGameObject);
 
 	m_pGameObjectManager->setMainLight(pLightComponent);
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
 	
