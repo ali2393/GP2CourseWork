@@ -52,8 +52,16 @@ bool CGameApplication::init()
 		return false;
 	if (!initInput())
 		return false;
+	if(!initAudio())
+		return false;
 	if (!initGame())
 		return false;
+	return true;
+}
+
+bool CGameApplication::initAudio()
+{
+	CAudioSystem::getInstance().init();
 	return true;
 }
 
@@ -101,6 +109,13 @@ bool CGameApplication::initGame()
 	pMaterial->loadBumpTexture("armoredrecon_N.png");
 	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
 	pTestGameObject->addComponent(pMaterial);
+
+	//Audio (For Sensor)
+	CAudioSourceComponent *pSensor=new CAudioSourceComponent();
+	pSensor->setFilename("sensor.wav");
+	pSensor->setStream(false);
+	pTestGameObject->addComponent(pSensor);
+
 	//Create Mesh
 	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
@@ -130,7 +145,6 @@ bool CGameApplication::initGame()
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	CGameObject *pCameraGameObject=new CGameObject();
 	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-200.0f);
 	pCameraGameObject->setName("Camera");
@@ -148,7 +162,26 @@ bool CGameApplication::initGame()
 	pCamera->setNearClip(0.1f);
 	pCameraGameObject->addComponent(pCamera);
 
+	CAudioSourceComponent *pBackground1=new CAudioSourceComponent();
+	pBackground1->setFilename("background1.wav");
+	pBackground1->setStream(false);
+	pCameraGameObject->addComponent(pBackground1);
+
+	CAudioSourceComponent *pBackground2=new CAudioSourceComponent();
+	pBackground1->setFilename("background2.wav");
+	pBackground1->setStream(false);
+	pCameraGameObject->addComponent(pBackground2);
+	
+	CAudioSourceComponent *pBackground3=new CAudioSourceComponent();
+	pBackground1->setFilename("background3.wav");
+	pBackground1->setStream(false);
+	pCameraGameObject->addComponent(pBackground3);
+
+	CAudioListenerComponent *pListener=new CAudioListenerComponent();
+	pCameraGameObject->addComponent(pListener);
+
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
@@ -164,6 +197,11 @@ bool CGameApplication::initGame()
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
 	
+	pBackground1->play();
+	pBackground2->play();
+	pBackground3->play();
+	
+
 	m_Timer.start();
 	return true;
 }
@@ -254,6 +292,8 @@ void CGameApplication::render()
 void CGameApplication::update()
 {
 	m_Timer.update();
+
+	CAudioSystem::getInstance().update();
 
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{

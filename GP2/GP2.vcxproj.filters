@@ -49,6 +49,15 @@
     <Filter Include="Components\Camera">
       <UniqueIdentifier>{04c31a65-dfe5-4bbb-9678-f1fa5f74b35e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Audio">
+      <UniqueIdentifier>{0c00a3fb-a9d2-4d74-8df2-634cf4d854e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{e21a3b93-5ea4-41da-af35-c48859e256ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Player&amp;Bots">
+      <UniqueIdentifier>{70ca6014-44be-4bd8-9fa9-d7f9fd0f63ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -102,11 +111,20 @@
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Components\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="AudioListenerComponent.cpp">
+      <Filter>Components\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSourceComponent.cpp">
+      <Filter>Components\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystem.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
     <ClCompile Include="BadGuy.cpp">
-      <Filter>Components</Filter>
+      <Filter>Components\Player&amp;Bots</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Components</Filter>
+      <Filter>Components\Player&amp;Bots</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,11 +188,20 @@
     <ClInclude Include="Geometry.h">
       <Filter>Components\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="AudioListenerComponent.h">
+      <Filter>Components\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSourceComponent.h">
+      <Filter>Components\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSystem.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
     <ClInclude Include="BadGuy.h">
-      <Filter>Components</Filter>
+      <Filter>Components\Player&amp;Bots</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Components</Filter>
+      <Filter>Components\Player&amp;Bots</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
