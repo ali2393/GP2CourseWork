@@ -32,14 +32,14 @@ public:
 		m_bStream=stream;
 	};
 
-	//play
-	void play();
-	
-	//getLoop
-	void getLoopCount(int loopcount)
+	//setLoop
+	void setLoopCount(int loopcount)
 	{
-		m_bLoop=loopcount;
+		m_bLoopcount=loopcount;
 	};
+
+	//play
+	void play(int);
 
 	//stop
 	void stop();
@@ -51,6 +51,6 @@ private:
 	//channel to control the sound
 	Channel *m_pChannel;
 	bool m_bStream;
-	int m_bLoop;
+	int m_bLoopcount;
 
 };

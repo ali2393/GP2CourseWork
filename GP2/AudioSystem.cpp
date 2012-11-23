@@ -121,6 +121,9 @@ void CAudioSystem::updateListener(FMOD_VECTOR &position, FMOD_VECTOR &vel, FMOD_
 	m_pAudioSystem->set3DListenerAttributes(0,&position,&vel,&forward,&up);
 }
 
+
+
+
 void CAudioSystem::update()
 {
 	//update the audio system, this will have to be called every frame
