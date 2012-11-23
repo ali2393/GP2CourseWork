@@ -12,6 +12,10 @@
 #include "DirectionLightComponent.h"
 #include "MeshComponent.h"
 
+#include "AudioListenerComponent.h"
+#include "AudioSourceComponent.h"
+#include "AudioSystem.h"
+
 #include "ModelLoader.h"
 
 #include <vector>
@@ -29,7 +33,7 @@ private:
 	bool initInput();
 	bool initGame();
 	bool initGraphics();
-
+	bool initAudio();
 	bool initWindow();
 	void render();
 	void update();
