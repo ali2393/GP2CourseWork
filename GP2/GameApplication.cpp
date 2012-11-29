@@ -127,6 +127,7 @@ bool CGameApplication::initGame()
 	pTestGameObject=new CGameObject;
 	pTestGameObject->setName("TestRoom");
 	pTestGameObject->getTransform()->setPosition(10.0f,10.0f,10.0f);
+	pTestGameObject->getTransform()->setRotation(135.0f,0.0f,135.0f);
 
 	//addMaterial
 	pMaterial=new CMaterialComponent();
@@ -139,7 +140,7 @@ bool CGameApplication::initGame()
 	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
 	pTestGameObject->addComponent(pMaterial);
 	//Create Mesh
-	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"TESTROOM.fbx");
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"RoomforTest.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
@@ -147,6 +148,7 @@ bool CGameApplication::initGame()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pCameraGameObject=new CGameObject();
 	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-200.0f);
+	pCameraGameObject->getTransform()->setRotation(0.0f,0.0f,180.0f);
 	pCameraGameObject->setName("Camera");
 
 	D3D10_VIEWPORT vp;
@@ -171,7 +173,7 @@ bool CGameApplication::initGame()
 	CAudioSourceComponent *pBackground2=new CAudioSourceComponent();
 	pBackground2->setFilename("background2.wav");
 	pBackground2->setStream(false);
-	pBackground2->setLoopCount(0);
+	pBackground2->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground2);
 	
 	CAudioSourceComponent *pBackground3=new CAudioSourceComponent();
@@ -200,9 +202,9 @@ bool CGameApplication::initGame()
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
 	
-	pBackground1->play(-1);
-	pBackground2->play(0);
-	pBackground3->play(-1);
+	pBackground1->play();
+	pBackground2->play();
+	pBackground3->play();
 	
 
 	m_Timer.start();

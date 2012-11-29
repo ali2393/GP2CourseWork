@@ -39,7 +39,7 @@ public:
 	};
 
 	//play
-	void play(int);
+	void play();
 
 	//stop
 	void stop();
