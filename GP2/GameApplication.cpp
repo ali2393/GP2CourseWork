@@ -161,7 +161,7 @@ bool CGameApplication::initGame()
 	pCamera->setFarClip(1000.0f);
 	pCamera->setNearClip(0.1f);
 	pCameraGameObject->addComponent(pCamera);
-
+	/*
 	CAudioSourceComponent *pBackground1=new CAudioSourceComponent();
 	pBackground1->setFilename("background1.wav");
 	pBackground1->setStream(false);
@@ -182,7 +182,7 @@ bool CGameApplication::initGame()
 
 	CAudioListenerComponent *pListener=new CAudioListenerComponent();
 	pCameraGameObject->addComponent(pListener);
-
+	*/
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
