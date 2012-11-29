@@ -1,8 +1,11 @@
 #pragma once
 
 #include "IComponent.h"
+#include "GameObject.h"
+#include "TransformComponent.h"
 #include <D3D10.h>
 #include <D3DX10.h>
+#include <math.h>
 
 class CCameraComponent:public CBaseComponent
 {
@@ -21,6 +24,7 @@ public:
 	{
 		return m_matProjection;
 	};
+
 
 	void setLookAt(float x,float y,float z)
 	{
@@ -51,6 +55,34 @@ public:
 	{
 		m_fFarClip=farClip;
 	};
+	
+	void setYaw(float yaw)
+    {
+		m_fYaw=yaw;
+	};
+
+	void setPitch(float pitch)
+	{
+		m_fPitch=pitch;
+	};
+
+	void yaw(float yaw)
+	{
+		m_fYaw+=yaw;
+	};
+
+	void pitch(float p)
+	{
+		m_fPitch+=p;
+	};
+
+	void move(float x, float y, float z)
+	{
+		getParent()->getTransform()->translate(x,y,z);
+		m_vecLookAt.x+=x;
+		m_vecLookAt.y+=y;
+		m_vecLookAt.z+=z;
+	};
 private:
 	D3DXMATRIX m_matView;
 	D3DXMATRIX m_matProjection;
@@ -62,4 +94,8 @@ private:
 	float m_fFOV;
 	float m_fNearClip;
 	float m_fFarClip;
+
+	float m_fYaw;
+	float m_fPitch;
+
 };

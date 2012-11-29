@@ -4,6 +4,7 @@
 
 #include "Input.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 
 CGameApplication::CGameApplication(void)
 {
@@ -161,8 +162,6 @@ bool CGameApplication::initGame()
 	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
 	pCameraGameObject->setName("Camera");
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-
 	D3D10_VIEWPORT vp;
 	UINT numViewports=1;
 	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
@@ -177,6 +176,8 @@ bool CGameApplication::initGame()
 	pCameraGameObject->addComponent(pCamera);
 
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
@@ -283,29 +284,51 @@ void CGameApplication::update()
 {
 	m_Timer.update();
 
+	// get mouse pos
+
+	//float mousex=CInput::getInstance().getMouse()->getAbsoluteMouseX();
+	//float mousey=CInput::getInstance().getMouse()->getAbsoluteMouseY();
+
+	CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
+	if (pCamera)
+	{
+		float mouseDeltaX=CInput::getInstance().getMouse()->getRelativeMouseX();
+		float mouseDeltaY=CInput::getInstance().getMouse()->getRelativeMouseY();
+
+		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime());
+		pCamera->pitch(mouseDeltaY*m_Timer.getElapsedTime());
+	}
+	//Set Look at
+	//CCameraComponent * pCamera = m_pGameObjectManager->findGameObject("Camera").setLookAt(mousex,mousey,0.0f);
+	//pCameraGameObject->setLookAt(mousex,mousey,0.0f);
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
+	{
+		m_pGameObjectManager->getMainCamera()->move(m_Timer.getElapsedTime(),0.0f,0.0f);
+		//play sound
+		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
+		//pTransform->translate(m_Timer.getElapsedTime()*2,0.0f,0.0f);
+	}
+	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
+	{
+		m_pGameObjectManager->getMainCamera()->move(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
+		//play sound
+		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
+		//pTransform->translate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
+	}
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{
+		m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime());
 		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(m_Timer.getElapsedTime(),0.0f,0.0f);
+		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
+		//pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime());
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
 	{
+		m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime()*-1);
 		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
-	}
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
-	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(0.0f,m_Timer.getElapsedTime(),0.0f);
-	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
-	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
+		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
+		//pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-1);
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 
