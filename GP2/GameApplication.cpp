@@ -123,11 +123,11 @@ bool CGameApplication::initGame()
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//create game object
+
+		//create game object
 	pTestGameObject=new CGameObject;
-	pTestGameObject->setName("TestRoom");
-	pTestGameObject->getTransform()->setPosition(10.0f,10.0f,10.0f);
-	pTestGameObject->getTransform()->setRotation(135.0f,0.0f,135.0f);
+	pTestGameObject->setName("waypoint1");
+	pTestGameObject->getTransform()->setPosition(5.0f,0.0f,0.0f);
 
 	//addMaterial
 	pMaterial=new CMaterialComponent();
@@ -139,16 +139,65 @@ bool CGameApplication::initGame()
 	pMaterial->loadBumpTexture("armoredrecon_N.png");
 	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
 	pTestGameObject->addComponent(pMaterial);
+
 	//Create Mesh
-	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"RoomforTest.fbx");
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//create game object
+	pTestGameObject=new CGameObject;
+	pTestGameObject->setName("waypoint2");
+	pTestGameObject->getTransform()->setPosition(-5.0f,0.0f,0.0f);
+
+	//addMaterial
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
+	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pMaterial->loadBumpTexture("armoredrecon_N.png");
+	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
+	pTestGameObject->addComponent(pMaterial);
+
+	//Create Mesh
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestGameObject->addComponent(pMesh);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////create game object
+	//pTestGameObject=new CGameObject;
+	//pTestGameObject->setName("TestRoom");
+	//pTestGameObject->getTransform()->setPosition(10.0f,10.0f,10.0f);
+	//pTestGameObject->getTransform()->setRotation(135.0f,0.0f,135.0f);
+
+	////addMaterial
+	//pMaterial=new CMaterialComponent();
+	//pMaterial->SetRenderingDevice(m_pD3D10Device);
+	//pMaterial->setEffectFilename("Parallax.fx");
+	//pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
+	//pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	//pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	//pMaterial->loadBumpTexture("armoredrecon_N.png");
+	//pMaterial->loadParallaxTexture("armoredrecon_Height.png");
+	//pTestGameObject->addComponent(pMaterial);
+	////Create Mesh
+	//pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"RoomforTest.fbx");
+	//pMesh->SetRenderingDevice(m_pD3D10Device);
+	//pTestGameObject->addComponent(pMesh);
+	////add the game object
+	//m_pGameObjectManager->addGameObject(pTestGameObject);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pCameraGameObject=new CGameObject();
-	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-200.0f);
-	pCameraGameObject->getTransform()->setRotation(0.0f,0.0f,180.0f);
+	pCameraGameObject->getTransform()->setPosition(0.0f,10.0f,-20.0f);
 	pCameraGameObject->setName("Camera");
 
 	D3D10_VIEWPORT vp;

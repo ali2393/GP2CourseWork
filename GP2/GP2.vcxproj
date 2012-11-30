@@ -96,6 +96,7 @@
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="PathFinding.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Win32Window.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="PathFinding.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TransformComponent.h" />
