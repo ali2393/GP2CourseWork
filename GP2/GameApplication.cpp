@@ -123,6 +123,8 @@ bool CGameApplication::initGame()
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/*
 	//create game object
 	pTestGameObject=new CGameObject;
 	pTestGameObject->setName("TestRoom");
@@ -145,10 +147,10 @@ bool CGameApplication::initGame()
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
+	*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pCameraGameObject=new CGameObject();
-	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-200.0f);
-	pCameraGameObject->getTransform()->setRotation(0.0f,0.0f,180.0f);
+	pCameraGameObject->getTransform()->setPosition(0.0f,10.0f,-20.0f);
 	pCameraGameObject->setName("Camera");
 
 	D3D10_VIEWPORT vp;

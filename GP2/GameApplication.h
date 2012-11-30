@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include <D3D10.h>
 #include <D3DX10.h>
+#include <fmod.hpp>
 
 #include "GameObjectManager.h"
 
