@@ -34,4 +34,5 @@ void CPathFinding::update(float elapsedTime)
 	{
 		//D3DXVECTOR3 nextPoint=GameApplication->m_pGameObjectManager->findGameObject("waypoint1")->getTransform()->getPosition();
 	}
+
 }
