@@ -58,6 +58,12 @@
     <Filter Include="Components\Player&amp;Bots">
       <UniqueIdentifier>{70ca6014-44be-4bd8-9fa9-d7f9fd0f63ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{fa7806cf-edc4-4096-a25b-ada2a86a4deb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUIScripts">
+      <UniqueIdentifier>{8a2d2280-46a7-4ffc-a1ab-120add901d77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -128,6 +134,15 @@
     </ClCompile>
     <ClCompile Include="PathFinding.cpp">
       <Filter>Components\Player&amp;Bots</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUISystemInterface.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderInterfaceDirectx10.cpp">
+      <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +224,18 @@
     <ClInclude Include="PathFinding.h">
       <Filter>Components\Player&amp;Bots</Filter>
     </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUISystemInterface.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D10Effect.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderInterfaceDirectx10.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ScreenSpace.fx">
@@ -240,6 +267,21 @@
     </None>
     <None Include="Environment.fx">
       <Filter>Effects</Filter>
+    </None>
+    <None Include="cursor.rml">
+      <Filter>GUIScripts</Filter>
+    </None>
+    <None Include="demo.rml">
+      <Filter>GUIScripts</Filter>
+    </None>
+    <None Include="invader.rcss">
+      <Filter>GUIScripts</Filter>
+    </None>
+    <None Include="rkt.rcss">
+      <Filter>GUIScripts</Filter>
+    </None>
+    <None Include="window.rml">
+      <Filter>GUIScripts</Filter>
     </None>
   </ItemGroup>
 </Project>

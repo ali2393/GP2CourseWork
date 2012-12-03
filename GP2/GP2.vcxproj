@@ -50,13 +50,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(HAVOKSDK_DIR)\source;$(FMODSDK_DIR)\inc;$(FBXSDK_DIR)\include;$(DXSDK_DIR)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ROCKETSDK_DIR)\Include;$(HAVOKSDK_DIR)\source;$(FMODSDK_DIR)\inc;$(FBXSDK_DIR)\include;$(DXSDK_DIR)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(HAVOKSDK_DIR)\Lib\win32_vs2010\debug_multithreaded_dll;$(FMODSDK_DIR)\lib;$(FBXSDK_DIR)\lib\vs2010\x86;$(DXSDK_DIR)\lib\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d10.lib;d3dx10.lib;xinput.lib;fbxsdk-2013.1d.lib;fmodex_vc.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkVisualize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkcdInternal.lib;hkcdCollide.lib;hkpCollide.lib;hkpConstraintSolver.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkpVehicle.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ROCKETSDK_DIR)\Lib;$(HAVOKSDK_DIR)\Lib\win32_vs2010\debug_multithreaded_dll;$(FMODSDK_DIR)\lib;$(FBXSDK_DIR)\lib\vs2010\x86;$(DXSDK_DIR)\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d10.lib;d3dx10.lib;xinput.lib;fbxsdk-2013.1d.lib;fmodex_vc.lib;hkBase.lib;hkCompat.lib;hkSceneData.lib;hkSerialize.lib;hkVisualize.lib;hkInternal.lib;hkGeometryUtilities.lib;hkcdInternal.lib;hkcdCollide.lib;hkpCollide.lib;hkpConstraintSolver.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkpVehicle.lib;RocketCore_d.lib;RocketDebugger_d.lib;RocketControls_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,6 +87,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="GUIManager.cpp" />
+    <ClCompile Include="GUISystemInterface.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Joypad.cpp" />
     <ClCompile Include="Keyboard.cpp" />
@@ -98,6 +100,7 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PathFinding.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RenderInterfaceDirectx10.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Win32Window.cpp" />
   </ItemGroup>
@@ -107,12 +110,15 @@
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BadGuy.h" />
     <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="D3D10Effect.h" />
     <ClInclude Include="DefaultEffect.h" />
     <ClInclude Include="DirectionLightComponent.h" />
     <ClInclude Include="GameApplication.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GUIManager.h" />
+    <ClInclude Include="GUISystemInterface.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Joypad.h" />
@@ -124,6 +130,7 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="PathFinding.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RenderInterfaceDirectx10.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Vertex.h" />
@@ -132,14 +139,19 @@
   <ItemGroup>
     <None Include="ambient.fx" />
     <None Include="Bumpmapping.fx" />
+    <None Include="cursor.rml" />
+    <None Include="demo.rml" />
     <None Include="diffuse.fx" />
     <None Include="DirectionalLight.fx" />
     <None Include="Environment.fx" />
+    <None Include="invader.rcss" />
     <None Include="Parallax.fx" />
+    <None Include="rkt.rcss" />
     <None Include="ScreenSpace.fx" />
     <None Include="Specular.fx" />
     <None Include="Texture.fx" />
     <None Include="Transform.fx" />
+    <None Include="window.rml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

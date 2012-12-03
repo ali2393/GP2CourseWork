@@ -17,6 +17,7 @@
 #include "AudioSystem.h"
 
 #include "ModelLoader.h"
+#include "GUIManager.h"
 
 #include <vector>
 
@@ -33,6 +34,7 @@ private:
 	bool initInput();
 	bool initGame();
 	bool initGraphics();
+	bool initGUI();
 	bool initAudio();
 	bool initWindow();
 	void render();

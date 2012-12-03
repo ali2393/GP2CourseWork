@@ -21,6 +21,8 @@ CGameApplication::~CGameApplication(void)
 	if (m_pD3D10Device)
 		m_pD3D10Device->ClearState();
 
+	CGUIManager::getInstance().destroy();
+
 	if (m_pGameObjectManager)
 	{
 		delete m_pGameObjectManager;
@@ -54,8 +56,21 @@ bool CGameApplication::init()
 		return false;
 	if(!initAudio())
 		return false;
+	if (!initGUI())
+		return false;
 	if (!initGame())
 		return false;
+	return true;
+}
+
+
+
+bool CGameApplication::initGUI()
+{
+	D3D10_VIEWPORT vp;
+	UINT numViewports=1;
+	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
+	CGUIManager::getInstance().init(m_pD3D10Device,vp.Width,vp.Height);
 	return true;
 }
 
