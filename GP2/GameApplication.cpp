@@ -295,8 +295,8 @@ void CGameApplication::update()
 		float mouseDeltaX=CInput::getInstance().getMouse()->getRelativeMouseX();
 		float mouseDeltaY=CInput::getInstance().getMouse()->getRelativeMouseY();
 
-		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime());
-		pCamera->pitch(mouseDeltaY*m_Timer.getElapsedTime());
+		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime()*2);
+		pCamera->pitch(-mouseDeltaY*m_Timer.getElapsedTime()*2);
 	}
 	//Set Look at
 	//CCameraComponent * pCamera = m_pGameObjectManager->findGameObject("Camera").setLookAt(mousex,mousey,0.0f);
