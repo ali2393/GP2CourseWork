@@ -353,6 +353,10 @@ void CGameApplication::render()
 		}
 
 	}
+
+	//Render GUI Scene
+	CGUIManager::getInstance().render();
+
 	//Swaps the buffers in the chain, the back buffer to the front(screen)
 	//http://msdn.microsoft.com/en-us/library/bb174576%28v=vs.85%29.aspx - BMD
     m_pSwapChain->Present( 0, 0 );
@@ -361,6 +365,7 @@ void CGameApplication::render()
 void CGameApplication::update()
 {
 	m_Timer.update();
+	CGUIManager::getInstance().update();
 
 	CAudioSystem::getInstance().update();
 
