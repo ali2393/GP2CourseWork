@@ -261,6 +261,30 @@ bool CGameApplication::initGame()
 	pCameraGameObject->addComponent(pListener);
 
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	CGameObject *pDebugCameraGameObject=new CGameObject();
+	pDebugCameraGameObject->getTransform()->setPosition(0.0f,10.0f,-20.0f);
+	pDebugCameraGameObject->setName("DebugCamera");
+
+	D3D10_VIEWPORT vp;
+	UINT numViewports=1;
+	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
+
+	CCameraComponent *pCamera=new CCameraComponent();
+	pCamera->setUp(0.0f,1.0f,0.0f);
+	pCamera->setLookAt(0.0f,0.0f,0.0f);
+	pCamera->setFOV(D3DX_PI*0.25f);
+	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
+	pCamera->setFarClip(1000.0f);
+	pCamera->setNearClip(0.1f);
+	pDebugCameraGameObject->addComponent(pCamera);
+
+	CAudioListenerComponent *pListener=new CAudioListenerComponent();
+	pDebugCameraGameObject->addComponent(pListener);
+
+	pDebugCameraGameObject->getComponent("pCamera")->disable();
+
+	m_pGameObjectManager->addGameObject(pDebugCameraGameObject);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
@@ -273,6 +297,7 @@ bool CGameApplication::initGame()
 	m_pGameObjectManager->addGameObject(pLightGameObject);
 
 	m_pGameObjectManager->setMainLight(pLightComponent);
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
@@ -413,6 +438,11 @@ void CGameApplication::update()
 		//play sound
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
 		pTransform->translate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
+	}
+	else if(CInput::getInstance().getKeyboard()->keyPressed((int)'#'))
+	{
+		m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->disable();
+		m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera")->enable();
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 
