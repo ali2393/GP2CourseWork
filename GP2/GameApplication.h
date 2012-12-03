@@ -12,10 +12,6 @@
 #include "DirectionLightComponent.h"
 #include "MeshComponent.h"
 
-#include "AudioListenerComponent.h"
-#include "AudioSourceComponent.h"
-#include "AudioSystem.h"
-
 #include "ModelLoader.h"
 #include "GUIManager.h"
 
@@ -35,7 +31,6 @@ private:
 	bool initGame();
 	bool initGraphics();
 	bool initGUI();
-	bool initAudio();
 	bool initWindow();
 	void render();
 	void update();

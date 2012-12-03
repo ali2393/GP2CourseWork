@@ -54,16 +54,12 @@ bool CGameApplication::init()
 		return false;
 	if (!initInput())
 		return false;
-	if(!initAudio())
-		return false;
 	if (!initGUI())
 		return false;
 	if (!initGame())
 		return false;
 	return true;
 }
-
-
 
 bool CGameApplication::initGUI()
 {
@@ -74,18 +70,11 @@ bool CGameApplication::initGUI()
 	return true;
 }
 
-bool CGameApplication::initAudio()
-{
-	CAudioSystem::getInstance().init();
-	return true;
-}
-
 bool CGameApplication::initGame()
 {
     // Set primitive topology, how are we going to interpet the vertices in the vertex buffer - BMD
     //http://msdn.microsoft.com/en-us/library/bb173590%28v=VS.85%29.aspx - BMD
     m_pD3D10Device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST );	
-
 
 	CGameObject *pTestGameObject=new CGameObject();
 	//Set the name
@@ -102,117 +91,58 @@ bool CGameApplication::initGame()
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Create Game Object
 	pTestGameObject=new CGameObject();
-	pTestGameObject->setName("TestSP");
+	//Set the name
+	pTestGameObject->setName("Test");
+	//Position
 	pTestGameObject->getTransform()->setPosition(0.0f,0.0f,10.0f);
-	m_pGameObjectManager->addGameObject(pTestGameObject);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//create game object
-	D3DXVECTOR3 spawnPos=m_pGameObjectManager->findGameObject("TestSP")->getTransform()->getPosition();
-	pTestGameObject=new CGameObject;
-	pTestGameObject->setName("TestSO");
-	pTestGameObject->getTransform()->setPosition(spawnPos.x,spawnPos.y,spawnPos.z);
-
-	//addMaterial
+	pTestGameObject->getTransform()->setScale(0.1f,0.1f,0.1f);
+	//create material
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setEffectFilename("DirectionalLight.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
-	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
-	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
-	pMaterial->loadBumpTexture("armoredrecon_N.png");
-	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
-	pTestGameObject->addComponent(pMaterial);
-
-	//Audio (For Sensor)
-	CAudioSourceComponent *pSensor=new CAudioSourceComponent();
-	pSensor->setFilename("sensor.wav");
-	pSensor->setStream(false);
-	pTestGameObject->addComponent(pSensor);
-
-	//Create Mesh
-	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
-	pMesh->SetRenderingDevice(m_pD3D10Device);
-	pTestGameObject->addComponent(pMesh);
-	//add the game object
-	m_pGameObjectManager->addGameObject(pTestGameObject);
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		//create game object
-	pTestGameObject=new CGameObject;
-	pTestGameObject->setName("waypoint1");
-	pTestGameObject->getTransform()->setPosition(5.0f,0.0f,0.0f);
-
-	//addMaterial
-	pMaterial=new CMaterialComponent();
-	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
-	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
-	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
-	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
-	pMaterial->loadBumpTexture("armoredrecon_N.png");
-	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
-	pTestGameObject->addComponent(pMaterial);
-
-	//Create Mesh
-	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
-	pMesh->SetRenderingDevice(m_pD3D10Device);
-	pTestGameObject->addComponent(pMesh);
-	//add the game object
-	m_pGameObjectManager->addGameObject(pTestGameObject);
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		//create game object
-	pTestGameObject=new CGameObject;
-	pTestGameObject->setName("waypoint2");
-	pTestGameObject->getTransform()->setPosition(-5.0f,0.0f,0.0f);
-
-	//addMaterial
-	pMaterial=new CMaterialComponent();
-	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
-	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
-	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
-	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
-	pMaterial->loadBumpTexture("armoredrecon_N.png");
-	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
-	pTestGameObject->addComponent(pMaterial);
-
-	//Create Mesh
-	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
-	pMesh->SetRenderingDevice(m_pD3D10Device);
-	pTestGameObject->addComponent(pMesh);
-	//add the game object
-	m_pGameObjectManager->addGameObject(pTestGameObject);
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////create game object
-	//pTestGameObject=new CGameObject;
-	//pTestGameObject->setName("TestRoom");
-	//pTestGameObject->getTransform()->setPosition(10.0f,10.0f,10.0f);
-	//pTestGameObject->getTransform()->setRotation(135.0f,0.0f,135.0f);
-
-	////addMaterial
-	//pMaterial=new CMaterialComponent();
-	//pMaterial->SetRenderingDevice(m_pD3D10Device);
-	//pMaterial->setEffectFilename("Parallax.fx");
-	//pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
-	//pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadDiffuseTexture("Box001Diffuse.png");
 	//pMaterial->loadSpecularTexture("armoredrecon_spec.png");
 	//pMaterial->loadBumpTexture("armoredrecon_N.png");
 	//pMaterial->loadParallaxTexture("armoredrecon_Height.png");
-	//pTestGameObject->addComponent(pMaterial);
-	////Create Mesh
-	//pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"RoomforTest.fbx");
-	//pMesh->SetRenderingDevice(m_pD3D10Device);
-	//pTestGameObject->addComponent(pMesh);
-	////add the game object
-	//m_pGameObjectManager->addGameObject(pTestGameObject);
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	pTestGameObject->addComponent(pMaterial);
+
+	//Create Mesh
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"BriansBox.fbx");
+	//CMeshComponent *pMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestGameObject->addComponent(pMesh);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+
+	pTestGameObject=new CGameObject();
+	//Set the name
+	pTestGameObject->setName("Test2");
+	//Position
+	pTestGameObject->getTransform()->setPosition(5.0f,0.0f,10.0f);
+	//create material
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("DirectionalLight.fx");
+	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.5f,0.5f,0.5f,1.0f));
+	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pTestGameObject->addComponent(pMaterial);
+
+	//Create Mesh
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
+	//CMeshComponent *pMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestGameObject->addComponent(pMesh);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+
+	//Create Mesh
 	CGameObject *pCameraGameObject=new CGameObject();
-	pCameraGameObject->getTransform()->setPosition(0.0f,10.0f,-20.0f);
+	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
 	pCameraGameObject->setName("Camera");
 
 	D3D10_VIEWPORT vp;
@@ -228,30 +158,8 @@ bool CGameApplication::initGame()
 	pCamera->setNearClip(0.1f);
 	pCameraGameObject->addComponent(pCamera);
 
-	CAudioSourceComponent *pBackground1=new CAudioSourceComponent();
-	pBackground1->setFilename("background1.wav");
-	pBackground1->setStream(false);
-	pBackground1->setLoopCount(-1);
-	pCameraGameObject->addComponent(pBackground1);
-
-	CAudioSourceComponent *pBackground2=new CAudioSourceComponent();
-	pBackground2->setFilename("background2.wav");
-	pBackground2->setStream(false);
-	pBackground2->setLoopCount(-1);
-	pCameraGameObject->addComponent(pBackground2);
-	
-	CAudioSourceComponent *pBackground3=new CAudioSourceComponent();
-	pBackground3->setFilename("background3.wav");
-	pBackground3->setStream(false);
-	pBackground3->setLoopCount(-1);
-	pCameraGameObject->addComponent(pBackground3);
-
-	CAudioListenerComponent *pListener=new CAudioListenerComponent();
-	pCameraGameObject->addComponent(pListener);
-
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
 
@@ -262,15 +170,8 @@ bool CGameApplication::initGame()
 	m_pGameObjectManager->addGameObject(pLightGameObject);
 
 	m_pGameObjectManager->setMainLight(pLightComponent);
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
-	
-	pBackground1->play();
-	pBackground2->play();
-	pBackground3->play();
-	
-
 	m_Timer.start();
 	return true;
 }
@@ -351,12 +252,10 @@ void CGameApplication::render()
 				}
 			}
 		}
-
 	}
 
 	//Render GUI Scene
 	CGUIManager::getInstance().render();
-
 	//Swaps the buffers in the chain, the back buffer to the front(screen)
 	//http://msdn.microsoft.com/en-us/library/bb174576%28v=vs.85%29.aspx - BMD
     m_pSwapChain->Present( 0, 0 );
@@ -367,43 +266,29 @@ void CGameApplication::update()
 	m_Timer.update();
 	CGUIManager::getInstance().update();
 
-	CAudioSystem::getInstance().update();
-
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{
 		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime());
+		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
+		pTransform->rotate(m_Timer.getElapsedTime(),0.0f,0.0f);
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
 	{
 		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-1);
+		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
+		pTransform->rotate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
 	}
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
 	{
 		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->translate(m_Timer.getElapsedTime(),0.0f,0.0f);
+		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
+		pTransform->rotate(0.0f,m_Timer.getElapsedTime(),0.0f);
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
 	{
 		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->translate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
-	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'Q'))
-	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->translate(0.0f,m_Timer.getElapsedTime(),0.0f);
-	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'E'))
-	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
-		pTransform->translate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
+		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
+		pTransform->rotate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 

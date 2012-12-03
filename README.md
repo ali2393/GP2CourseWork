@@ -1,4 +1,4 @@
-GP2CourseWork
-=============
+gp2
+===
 
-SMAD Men GP2CourseWork
+The base code for the Games Programming 2 module

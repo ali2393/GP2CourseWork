@@ -1,7 +1,5 @@
 #include "ModelLoader.h"
-#include <fbxsdk.h>
 
-#include "MeshComponent.h"
 
 //might need this for new versions of the SDK
 //#include <fbxsdk/utils/>
@@ -67,14 +65,135 @@ CMeshComponent *CModelLoader::loadModelFromFile(ID3D10Device *pDevice,const stri
 	return pRenderable;
 }
 
+bool CModelLoader::loadTextureCoords(const FbxMesh *pMesh, Vertex *pVerts, int noVerts)
+{
+	//extract texture coordinates
+   //get all UV set names
+   FbxStringList lUVSetNameList;
+   pMesh->GetUVSetNames(lUVSetNameList);
+   //iterating over all uv sets
+   for (int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); lUVSetIndex++)
+   {
+        //get lUVSetIndex-th uv set
+        const char* lUVSetName = lUVSetNameList.GetStringAt(lUVSetIndex);
+        const FbxGeometryElementUV* lUVElement = pMesh->GetElementUV(lUVSetName);
+        if(!lUVElement)
+            continue;
+
+        // only support mapping mode eByPolygonVertex and eByControlPoint
+        if( lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
+            lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint )
+            return false;
+
+        //index array, where holds the index referenced to the uv data
+        const bool lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
+        const int lIndexCount= (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
+
+        //iterating through the data by polygon
+        const int lPolyCount = pMesh->GetPolygonCount();
+        if( lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint )
+        {
+            for( int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex )
+            {
+                // build the max index array that we need to pass into MakePoly
+                const int lPolySize = pMesh->GetPolygonSize(lPolyIndex);
+                for( int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex )
+                {
+                    FbxVector2 lUVValue;
+
+                    //get the index of the current vertex in control points array
+                    int lPolyVertIndex = pMesh->GetPolygonVertex(lPolyIndex,lVertIndex);
+
+                    //the UV index depends on the reference mode
+                    int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
+
+                    lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+					pVerts[lPolyVertIndex].TexCoords.x=lUVValue[0];
+					pVerts[lPolyVertIndex].TexCoords.y=1-lUVValue[1];
+                }
+            }
+        }
+       else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+        {
+            int lPolyIndexCounter = 0;
+            for( int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex )
+            {
+                // build the max index array that we need to pass into MakePoly
+                const int lPolySize = pMesh->GetPolygonSize(lPolyIndex);
+                for( int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex )
+                {
+                    if (lPolyIndexCounter < lIndexCount)
+                    {
+                        FbxVector2 lUVValue;
+
+                        //the UV index depends on the reference mode
+                        int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
+
+                        lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+						
+                        //User TODO:
+                        //Print out the value of UV(lUVValue) or log it to a file
+						//Something in here, verts don't refer correctly
+						int lPolyVertIndex = pMesh->GetPolygonVertex(lPolyIndex,lVertIndex);
+						pVerts[lPolyVertIndex].TexCoords.x=lUVValue[0];
+						pVerts[lPolyVertIndex].TexCoords.y=1-lUVValue[1];
+                        lPolyIndexCounter++;
+                    }
+                }
+			}
+		}
+   }
+
+   return true;
+}
+
+
+bool CModelLoader::loadFromMesh(const FbxMesh *pMesh, CMeshComponent * pMeshComponent)
+{
+   //Vertices
+   FbxVector4* lControlPoints = pMesh->GetControlPoints();
+   int numberOfVerts=pMesh->GetControlPointsCount();
+   
+   //Indices
+   int noIndices=pMesh->GetPolygonVertexCount();
+   int *pIndices=pMesh->GetPolygonVertices();
+
+   Vertex * pVerts=new Vertex[numberOfVerts];
+   for(int i=0;i<numberOfVerts;i++)
+   {
+	   pVerts[i].Pos.x=lControlPoints[i][0];
+	   pVerts[i].Pos.y=lControlPoints[i][1];
+	   pVerts[i].Pos.z=lControlPoints[i][2];
+   }
+   
+   loadTextureCoords(pMesh,pVerts,numberOfVerts);
+   
+   
+   CGeometry * pRenderable=new CGeometry(m_pD3DDevice);
+   for (int i=0;i<numberOfVerts;i++)
+   {
+	   pRenderable->addVertex(pVerts[i]);
+   }
+   for (int i=0;i<noIndices;i++)
+   {
+	   pRenderable->addIndex(pIndices[i]);
+	}
+
+   if (pVerts)
+   {
+	   delete[] pVerts;
+	   pVerts=NULL;
+   }
+
+   pMeshComponent->addSubset(pRenderable);
+
+   return true;
+}
 
 CMeshComponent * CModelLoader::loadFbxModelFromFile(ID3D10Device *pDevice,const string& filename)
 {
 	CMeshComponent * pMeshComponent=new CMeshComponent();
-	int noVerts=0;
-	int noIndices=0;
-	int *pIndices=NULL;
-	Vertex * pVerts=NULL;
+	m_pD3DDevice=pDevice;
 
 	FbxManager* lSdkManager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(lSdkManager, IOSROOT);
@@ -83,6 +202,7 @@ CMeshComponent * CModelLoader::loadFbxModelFromFile(ID3D10Device *pDevice,const 
     // Create an importer using our sdk manager.
     FbxImporter* lImporter = FbxImporter::Create(lSdkManager,"");
 	FbxGeometryConverter converter( lSdkManager);
+	
 
     // Use the first argument as the filename for the importer.
 	if(!lImporter->Initialize(filename.c_str(), -1, lSdkManager->GetIOSettings())) {
@@ -101,6 +221,7 @@ CMeshComponent * CModelLoader::loadFbxModelFromFile(ID3D10Device *pDevice,const 
 
     // Import the contents of the file into the scene.
     lImporter->Import(lScene);
+	converter.SplitMeshesPerMaterial(lScene);
 
     // The file has been imported; we can get rid of the importer.
     lImporter->Destroy();
@@ -119,76 +240,13 @@ CMeshComponent * CModelLoader::loadFbxModelFromFile(ID3D10Device *pDevice,const 
 					pMesh=(FbxMesh*)pAttributeNode;
 					if (pMesh)
 					{
-						CGeometry *pGeom=new CGeometry(pDevice);
 						pMesh=converter.TriangulateMesh(pMesh);
-						FbxVector4 * verts=pMesh->GetControlPoints();
-						int noVerts=pMesh->GetControlPointsCount();
-
-						int noIndices=pMesh->GetPolygonVertexCount();
-						int *pIndices=pMesh->GetPolygonVertices();
-
-						Vertex * pVerts=new Vertex[noVerts];
-						for(int i=0;i<noVerts;i++)
-						{
-
-								pVerts[i].Pos.x=verts[i][0];
-								pVerts[i].Pos.y=verts[i][1];
-								pVerts[i].Pos.z=verts[i][2];
-						}
-
-						for (int iPolygon = 0; iPolygon < pMesh->GetPolygonCount(); iPolygon++) { 
-							for (unsigned iPolygonVertex = 0; iPolygonVertex < 3; iPolygonVertex++) {	
-								int fbxCornerIndex = pMesh->GetPolygonVertex(iPolygon, iPolygonVertex);
-								FbxVector4 fbxVertex = verts[fbxCornerIndex];
-
-								FbxVector4 fbxNormal;	
-								pMesh->GetPolygonVertexNormal(iPolygon, iPolygonVertex, fbxNormal);	
-								fbxNormal.Normalize();	
-								pVerts[fbxCornerIndex].Normal=D3DXVECTOR3(fbxNormal[0],fbxNormal[1],fbxNormal[2]);
-
-								FbxVector2 fbxUV = FbxVector2(0.0, 0.0);	
-								FbxLayerElementUV* fbxLayerUV = pMesh->GetLayer(0)->GetUVs();
-								// Get texture coordinate	
-								if (fbxLayerUV) {		
-									int iUVIndex = 0;		
-									switch (fbxLayerUV->GetMappingMode()) {	
-										case FbxLayerElement::eByControlPoint:
-											iUVIndex = fbxCornerIndex;				
-										break;	
-										case FbxLayerElement::eByPolygonVertex:
-											iUVIndex = pMesh->GetTextureUVIndex(iPolygon, iPolygonVertex, FbxLayerElement::eTextureDiffuse);	
-										break;		
-									}		
-									fbxUV = fbxLayerUV->GetDirectArray().GetAt(iUVIndex);	
-									pVerts[fbxCornerIndex].TexCoords.x=fbxUV[0];
-									pVerts[fbxCornerIndex].TexCoords.y= 1.0f-fbxUV[1];
-								}
-							}
-						}
-
-						computeTangents(pVerts,noVerts);
-			
-						for (int i=0;i<noVerts;i++)
-						{
-							pGeom->addVertex(pVerts[i]);
-						}
-						for (int i=0;i<noIndices;i++)
-						{
-							pGeom->addIndex(pIndices[i]);
-						}
-			
-						if (pVerts)
-						{
-							delete [] pVerts;
-							pVerts=NULL;
-						}
-
-						pMeshComponent->addSubset(pGeom);
+						loadFromMesh(pMesh,pMeshComponent);
 					}
 				}
 			}
 		}
-    }
+	}
 
 	lSdkManager->Destroy();
 
