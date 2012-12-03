@@ -79,7 +79,6 @@ public:
 	void move(float x, float y, float z)
 	{
 		getParent()->getTransform()->translate(x,y,z);
-		//getParent()->getTransform()->rotate(m_fYaw,0.0f,0.f);
 		m_vecLookAt.x+=x;
 		m_vecLookAt.y+=y;
 		m_vecLookAt.z+=z;
