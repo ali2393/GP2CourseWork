@@ -266,21 +266,21 @@ bool CGameApplication::initGame()
 	pDebugCameraGameObject->getTransform()->setPosition(0.0f,10.0f,-20.0f);
 	pDebugCameraGameObject->setName("DebugCamera");
 
-	D3D10_VIEWPORT vp;
-	UINT numViewports=1;
-	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
+	D3D10_VIEWPORT vp2;
+	UINT numViewports2=1;
+	m_pD3D10Device->RSGetViewports(&numViewports2,&vp2);
 
-	CCameraComponent *pCamera=new CCameraComponent();
-	pCamera->setUp(0.0f,1.0f,0.0f);
-	pCamera->setLookAt(0.0f,0.0f,0.0f);
-	pCamera->setFOV(D3DX_PI*0.25f);
-	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
-	pCamera->setFarClip(1000.0f);
-	pCamera->setNearClip(0.1f);
-	pDebugCameraGameObject->addComponent(pCamera);
+	CCameraComponent *pCamera2=new CCameraComponent();
+	pCamera2->setUp(0.0f,1.0f,0.0f);
+	pCamera2->setLookAt(0.0f,0.0f,0.0f);
+	pCamera2->setFOV(D3DX_PI*0.25f);
+	pCamera2->setAspectRatio((float)(vp.Width/vp.Height));
+	pCamera2->setFarClip(1000.0f);
+	pCamera2->setNearClip(0.1f);
+	pDebugCameraGameObject->addComponent(pCamera2);
 
-	CAudioListenerComponent *pListener=new CAudioListenerComponent();
-	pDebugCameraGameObject->addComponent(pListener);
+	CAudioListenerComponent *pListener2=new CAudioListenerComponent();
+	pDebugCameraGameObject->addComponent(pListener2);
 
 	pDebugCameraGameObject->getComponent("pCamera")->disable();
 
