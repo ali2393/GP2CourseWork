@@ -1,6 +1,7 @@
 #include "PathFinding.h"
 #include "GameObject.h"
 #include "GameApplication.h"
+#include "GameObjectManager.h"
 
 
 CPathFinding::CPathFinding()
@@ -31,6 +32,6 @@ void CPathFinding::update(float elapsedTime)
 {
 	if(m_iCurrentWaypoint=1)
 	{
-		D3DXVECTOR3 nextPoint=m_pGameObjectManager->findGameObject("waypoint1")->getTransform()->getPosition();
+		//D3DXVECTOR3 nextPoint=GameApplication->m_pGameObjectManager->findGameObject("waypoint1")->getTransform()->getPosition();
 	}
 }

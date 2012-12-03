@@ -1,7 +1,7 @@
 #include "GameObjectManager.h"
 #include "GameObject.h"
 #include "CameraComponent.h"
-
+#include "PathFinding.h"
 CGameObjectManager::CGameObjectManager()
 {
 }
