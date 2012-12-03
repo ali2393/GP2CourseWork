@@ -263,7 +263,7 @@ bool CGameApplication::initGame()
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pDebugCameraGameObject=new CGameObject();
-	pDebugCameraGameObject->getTransform()->setPosition(0.0f,10.0f,-20.0f);
+	pDebugCameraGameObject->getTransform()->setPosition(20.0f,20.0f,-40.0f);
 	pDebugCameraGameObject->setName("DebugCamera");
 
 	D3D10_VIEWPORT vp2;
@@ -282,9 +282,11 @@ bool CGameApplication::initGame()
 	CAudioListenerComponent *pListener2=new CAudioListenerComponent();
 	pDebugCameraGameObject->addComponent(pListener2);
 
-	pDebugCameraGameObject->getComponent("pCamera")->disable();
+	//pDebugCameraGameObject->getComponent("pCamera")->disable();
 
 	m_pGameObjectManager->addGameObject(pDebugCameraGameObject);
+
+	pDebugCameraGameObject->getComponent("pCamera")->disable();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
