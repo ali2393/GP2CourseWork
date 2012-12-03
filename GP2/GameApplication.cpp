@@ -295,12 +295,15 @@ void CGameApplication::update()
 		float mouseDeltaX=CInput::getInstance().getMouse()->getRelativeMouseX();
 		float mouseDeltaY=CInput::getInstance().getMouse()->getRelativeMouseY();
 
-		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime()*2);
-		pCamera->pitch(-mouseDeltaY*m_Timer.getElapsedTime()*2);
+		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime());
+		pCamera->pitch(-mouseDeltaY*m_Timer.getElapsedTime());
+
+		//m_pGameObjectManager->getMainCamera()->rotate();
+		//pCamera->rotate();
 	}
 	//Set Look at
 	//CCameraComponent * pCamera = m_pGameObjectManager->findGameObject("Camera").setLookAt(mousex,mousey,0.0f);
-	//pCameraGameObject->setLookAt(mousex,mousey,0.0f);
+		//pCamera->setLookAt(m_Timer.getElapsedTime(),0.0f,0.0f);
 
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
 	{
@@ -318,7 +321,7 @@ void CGameApplication::update()
 	}
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{
-		m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime());
+		m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime()*7);
 		//play sound
 		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
 		//pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime());
