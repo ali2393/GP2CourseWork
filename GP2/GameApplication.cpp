@@ -189,8 +189,8 @@ bool CGameApplication::initGame()
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 
-	CMeshCollider *pMeshC = new CMeshCollider();
-	pTestGameObject->addComponent(pMeshC);
+	//CMeshCollider *pMeshC = new CMeshCollider();
+	//pTestGameObject->addComponent(pMeshC);
 
 
 	//add the game object
@@ -285,8 +285,6 @@ bool CGameApplication::initGame()
 	//pDebugCameraGameObject->getComponent("pCamera")->disable();
 
 	m_pGameObjectManager->addGameObject(pDebugCameraGameObject);
-
-	pDebugCameraGameObject->getComponent("pCamera")->disable();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
@@ -401,7 +399,7 @@ void CGameApplication::update()
 	m_Timer.update();
 
 	CAudioSystem::getInstance().update();
-
+	bool debug=0;
 
 
 
@@ -443,8 +441,19 @@ void CGameApplication::update()
 	}
 	else if(CInput::getInstance().getKeyboard()->keyPressed((int)'#'))
 	{
+		if(debug=0)
+		{
 		m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->disable();
 		m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera")->enable();
+		debug=1;
+		}
+
+		if(debug=1)
+		{
+		m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera")->disable();
+		m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->enable();
+		debug=0;
+		}
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 
