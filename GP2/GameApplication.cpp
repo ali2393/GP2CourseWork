@@ -274,7 +274,7 @@ bool CGameApplication::initGame()
 	pCamera2->setUp(0.0f,1.0f,0.0f);
 	pCamera2->setLookAt(0.0f,0.0f,0.0f);
 	pCamera2->setFOV(D3DX_PI*0.25f);
-	pCamera2->setAspectRatio((float)(vp.Width/vp.Height));
+	pCamera2->setAspectRatio((float)(vp2.Width/vp2.Height));
 	pCamera2->setFarClip(1000.0f);
 	pCamera2->setNearClip(0.1f);
 	pDebugCameraGameObject->addComponent(pCamera2);
