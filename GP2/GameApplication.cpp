@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Joypad.h"
 
 CGameApplication::CGameApplication(void)
 {
@@ -378,16 +379,16 @@ void CGameApplication::update()
 
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'R'))
 	{
-		m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->enable();
-		CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
-		m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->disable();
+		//m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->enable();
+		//CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
+		//m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->disable();
 
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'F'))
 	{	
-		m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->enable();
-		CCameraComponent *pDebugCamera=m_pGameObjectManager->getMainCamera();
-		m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->disable();
+		//m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->enable();
+		//CCameraComponent *pDebugCamera=m_pGameObjectManager->getMainCamera();
+		//m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->disable();
 	};	
 
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
