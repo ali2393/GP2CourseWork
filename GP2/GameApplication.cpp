@@ -14,7 +14,7 @@ CGameApplication::CGameApplication(void)
 	m_pDepthStencelView=NULL;
 	m_pDepthStencilTexture=NULL;
 	m_pGameObjectManager=new CGameObjectManager();
-	bool debug=0;
+	//bool debug=0;
 }
 
 CGameApplication::~CGameApplication(void)
@@ -81,8 +81,8 @@ void CGameApplication::contactPointCallback (const hkpContactPointEvent &event)
 	CGameObject *pGameObject2=(CGameObject*)pBody2->getUserData();
 
 	//Do something with the game objects
-	m_pGameObjectManager->findGameObject("TestSO")->getTransform()->setRotation(90.0f,90.0f,90.0f);
-
+	pBody->clone();
+	//m_pGameObjectManager->findGameObject("TestSO")->getTransform()->setRotation(90.0f,90.0f,90.0f);	
 }
 
 bool CGameApplication::initGame()
@@ -137,7 +137,7 @@ bool CGameApplication::initGame()
 
 	//create body make it fixed so no gravity effects it
 	CBodyComponent *pBody=new CBodyComponent();
-	pBody->setFixed(true);
+	pBody->setFixed(false);
 	pTestGameObject->addComponent(pBody);
 
 
@@ -190,7 +190,7 @@ bool CGameApplication::initGame()
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 
-	//CMeshCollider *pMeshC = new CMeshCollider();
+	//CMeshCollider *pMeshC = new CMeshCollider(m_pD3D10Device);
 	//pTestGameObject->addComponent(pMeshC);
 
 
@@ -222,6 +222,34 @@ bool CGameApplication::initGame()
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
 	*/
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	CGameObject *pDebugCameraGameObject=new CGameObject();
+	pDebugCameraGameObject->getTransform()->setPosition(20.0f,20.0f,-40.0f);
+	pDebugCameraGameObject->setName("DebugCamera");
+
+	D3D10_VIEWPORT vp2;
+	UINT numViewports2=1;
+	m_pD3D10Device->RSGetViewports(&numViewports2,&vp2);
+
+	CCameraComponent *pCamera2=new CCameraComponent();
+	pCamera2->setUp(0.0f,1.0f,0.0f);
+	pCamera2->setLookAt(0.0f,0.0f,0.0f);
+	pCamera2->setFOV(D3DX_PI*0.25f);
+	pCamera2->setAspectRatio((float)(vp2.Width/vp2.Height));
+	pCamera2->setFarClip(1000.0f);
+	pCamera2->setNearClip(0.1f);
+	pDebugCameraGameObject->addComponent(pCamera2);
+
+	CAudioListenerComponent *pListener2=new CAudioListenerComponent();
+	pDebugCameraGameObject->addComponent(pListener2);
+
+	
+
+	m_pGameObjectManager->addGameObject(pDebugCameraGameObject);
+
+	
+	//pDebugCameraGameObject->getComponent("pCamera2")->disable();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pCameraGameObject=new CGameObject();
 	pCameraGameObject->getTransform()->setPosition(0.0f,10.0f,-20.0f);
@@ -257,37 +285,11 @@ bool CGameApplication::initGame()
 	pBackground3->setStream(false);
 	pBackground3->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground3);
-
 	CAudioListenerComponent *pListener=new CAudioListenerComponent();
 	pCameraGameObject->addComponent(pListener);
 
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	CGameObject *pDebugCameraGameObject=new CGameObject();
-	pDebugCameraGameObject->getTransform()->setPosition(20.0f,20.0f,-40.0f);
-	pDebugCameraGameObject->setName("DebugCamera");
 
-	D3D10_VIEWPORT vp2;
-	UINT numViewports2=1;
-	m_pD3D10Device->RSGetViewports(&numViewports2,&vp2);
-
-	CCameraComponent *pCamera2=new CCameraComponent();
-	pCamera2->setUp(0.0f,1.0f,0.0f);
-	pCamera2->setLookAt(0.0f,0.0f,0.0f);
-	pCamera2->setFOV(D3DX_PI*0.25f);
-	pCamera2->setAspectRatio((float)(vp2.Width/vp2.Height));
-	pCamera2->setFarClip(1000.0f);
-	pCamera2->setNearClip(0.1f);
-	pDebugCameraGameObject->addComponent(pCamera2);
-
-	CAudioListenerComponent *pListener2=new CAudioListenerComponent();
-	pDebugCameraGameObject->addComponent(pListener2);
-
-	
-
-	m_pGameObjectManager->addGameObject(pDebugCameraGameObject);
-
-	pDebugCameraGameObject->getComponent("pCamera2")->disable();
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
@@ -441,21 +443,22 @@ void CGameApplication::update()
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("TestSO")->getTransform();
 		pTransform->translate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
 	}
-	else if(CInput::getInstance().getKeyboard()->keyPressed((int)'#'))
+	else if(CInput::getInstance().getKeyboard()->keyPressed((int)'O'))
 	{
-		if(debug=0)
-		{
-		m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->disable();
-		m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera")->enable();
-		debug=1;
-		}
+		CCameraComponent *pCamera2=m_pGameObjectManager->getMainCamera();
 
-		if(debug=1)
-		{
-		m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera")->disable();
-		m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->enable();
-		debug=0;
-		}
+		m_pGameObjectManager->setMainCamera(pCamera2);
+		//m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera2")->disable;	
+		//m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->disable();
+			
+	}
+	else if(CInput::getInstance().getKeyboard()->keyPressed((int)'P'))
+	{
+		CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
+
+		m_pGameObjectManager->setMainCamera(pCamera);
+		//m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera2")->disable();
+		//m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->enable();
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 
@@ -465,9 +468,14 @@ void CGameApplication::update()
 
 bool CGameApplication::initPhysics()
 {
+	hkVector4 Gravity;
+
 	CPhysics::getInstance().init();
 	//Add the Game Application
 	CPhysics::getInstance().getPhysicsWorld()->addContactListener(this);
+
+	CPhysics::getInstance().getPhysicsWorld()->setGravity(Gravity);
+
 	return true;
 }
 
@@ -620,11 +628,30 @@ bool CGameApplication::initGraphics()
     vp.MaxDepth = 1.0f;
     vp.TopLeftX = 0;
     vp.TopLeftY = 0;
+
 	//Sets the Viewport 
 	//http://msdn.microsoft.com/en-us/library/bb173613%28v=vs.85%29.aspx - BMD
     m_pD3D10Device->RSSetViewports( 1 //Number of viewports to bind
 		, &vp );//an array of viewports
 
+
+	 // Setup the viewport 
+	//http://msdn.microsoft.com/en-us/library/bb172500%28v=vs.85%29.aspx - BMD
+    D3D10_VIEWPORT vp2;
+    vp.Width = width;
+    vp.Height = height;
+    vp.MinDepth = 0.0f;
+    vp.MaxDepth = 1.0f;
+    vp.TopLeftX = 0;
+    vp.TopLeftY = 0;
+
+
+
+	//Sets the Viewport 
+	//http://msdn.microsoft.com/en-us/library/bb173613%28v=vs.85%29.aspx - BMD
+    m_pD3D10Device->RSSetViewports( 1 //Number of viewports to bind
+		, &vp2 );//an array of viewports
+		
 	return true;
 }
 
