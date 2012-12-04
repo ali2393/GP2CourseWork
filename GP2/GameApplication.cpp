@@ -158,9 +158,10 @@ bool CGameApplication::initGame()
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	CGameObject *pCameraGameObject=new CGameObject();
-	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
-	pCameraGameObject->setName("Camera");
+	CGameObject *pPlayerGameObject=new CGameObject();
+	
+	pPlayerGameObject->setName("Player");
+	pPlayerGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
 
 	D3D10_VIEWPORT vp;
 	UINT numViewports=1;
@@ -173,11 +174,56 @@ bool CGameApplication::initGame()
 	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
 	pCamera->setFarClip(1000.0f);
 	pCamera->setNearClip(0.1f);
-	pCameraGameObject->addComponent(pCamera);
+	pPlayerGameObject->addComponent(pCamera);
 
-	m_pGameObjectManager->addGameObject(pCameraGameObject);
+	//CPlayerComponent *pPlayer=new CPlayerComponent();
+	//pTestGameObject=new CGameObject();
+	CMaterialComponent *pPlayerModel = new CMaterialComponent();
+	//Set the name
+	//pTestGameObject->setName("Test3");
+	//Position
+	//pPlayerModel->getTransform()->setPosition(-5.0f,0.0f,10.0f);
+	//create material
+	pPlayerModel=new CMaterialComponent();
+	pPlayerModel->SetRenderingDevice(m_pD3D10Device);
+	pPlayerModel->setEffectFilename("DirectionalLight.fx");
+	pPlayerModel->setAmbientMaterialColour(D3DXCOLOR(0.5f,0.5f,0.5f,1.0f));
+	pPlayerModel->loadDiffuseTexture("armoredrecon_diff.png");
+	pPlayerModel->loadSpecularTexture("armoredrecon_spec.png");
+	pPlayerGameObject->addComponent(pPlayerModel);
+
+	//Create Mesh
+	CMeshComponent *pPlayerMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
+	//CMeshComponent *pPlayerMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
+	pPlayerMesh->SetRenderingDevice(m_pD3D10Device);
+	pPlayerGameObject->addComponent(pPlayerMesh);
+
+	//add the game object
+	//m_pGameObjectManager->addGameObject(pTestGameObject);
+
+	m_pGameObjectManager->addGameObject(pPlayerGameObject);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/*CGameObject *pDeBugGameObject=new CGameObject();
+	
+	pDeBugGameObject->setName("Debug");
+	pDeBugGameObject->getTransform()->setPosition(0.0f,0.0f,-30.0f);
+
+	D3D10_VIEWPORT Db;
+	UINT numDbViewports=1;
+	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
+
+	CCameraComponent *pDebugCamera=new CCameraComponent();
+	pDebugCamera->setUp(0.0f,1.0f,0.0f);
+	pDebugCamera->setLookAt(0.0f,0.0f,0.0f);
+	pDebugCamera->setFOV(D3DX_PI*0.25f);
+	pDebugCamera->setAspectRatio((float)(vp.Width/vp.Height));
+	pDebugCamera->setFarClip(1000.0f);
+	pDebugCamera->setNearClip(0.1f);
+	pDeBugGameObject->addComponent(pCamera);
+	*/
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
@@ -288,6 +334,7 @@ void CGameApplication::update()
 
 	//float mousex=CInput::getInstance().getMouse()->getAbsoluteMouseX();
 	//float mousey=CInput::getInstance().getMouse()->getAbsoluteMouseY();
+	//pCamera = m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera");
 
 	CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
 	if (pCamera)
@@ -298,6 +345,9 @@ void CGameApplication::update()
 		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime());
 		pCamera->pitch(-mouseDeltaY*m_Timer.getElapsedTime());
 
+		
+		//m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(mouseDeltaX,0.0f,0.0f);
+
 		//pCamera->setLookAt(mouseDeltaX,0,0);
 		//pCamera->rotate();
 		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
@@ -307,33 +357,48 @@ void CGameApplication::update()
 	//CCameraComponent * pCamera = m_pGameObjectManager->findGameObject("Camera").setLookAt(mousex,mousey,0.0f);
 	//pCamera->setLookAt(m_Timer.getElapsedTime(),0.0f,0.0f);
 
+			
+
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
 	{
-		m_pGameObjectManager->getMainCamera()->move(m_Timer.getElapsedTime()*3,0.0f,0.0f);
+		//m_pGameObjectManager->getMainCamera()->move(m_Timer.getElapsedTime()*3,0.0f,0.0f);
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*2,0.0f,0.0f);
+		//pTransform->translate(m_Timer.getElapsedTime()*2,0.0f,0.0f);
 		//play sound
 		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
 		//pTransform->rotate(m_Timer.getElapsedTime()*2,0.0f,0.0f);
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
 	{
-		m_pGameObjectManager->getMainCamera()->move(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
+		//m_pGameObjectManager->getMainCamera()->move(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
 		//play sound
 		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
 		//pTransform->rotate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
 	}
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{
-		m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime()*3);
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
+		//m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime()*3);
 		//play sound
 		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
 		//pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime());
 	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
 	{
-		m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
+		//m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
 		//play sound
 		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
 		//pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-1);
+	}
+	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'R'))
+	{
+		
+		//m_pGameObjectManager->getMainCamera()->move(0.0f,0.0f,m_Timer.getElapsedTime()*3);
+		//play sound
+		//CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Camera")->getTransform();
+		//pTransform->translate(0.0f,0.0f,m_Timer.getElapsedTime());
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 

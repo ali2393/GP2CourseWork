@@ -11,7 +11,7 @@
 #include "CameraComponent.h"
 #include "DirectionLightComponent.h"
 #include "MeshComponent.h"
-
+#include "Player.h"
 #include "ModelLoader.h"
 
 #include <vector>

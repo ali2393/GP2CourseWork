@@ -1,6 +1,7 @@
 #include "MaterialComponent.h"
 #include "DefaultEffect.h"
 #include "Vertex.h"
+//#include "TransformComponent.h"
 
 CMaterialComponent::CMaterialComponent()
 {
