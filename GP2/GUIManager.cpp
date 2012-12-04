@@ -54,7 +54,7 @@ void CGUIManager::init(ID3D10Device * pD3D10Device,int width,int height)
 	Rocket::Debugger::SetVisible(false);
 
 	// Load and show the tutorial document.
-	Rocket::Core::ElementDocument* document = m_pContext->LoadDocument("window.rml");
+	Rocket::Core::ElementDocument* document = m_pContext->LoadDocument("demo.rml");
 	if (document != NULL)
 	{
 		document->Show();
