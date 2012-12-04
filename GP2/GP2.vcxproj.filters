@@ -154,7 +154,7 @@
       <Filter>Components\Physics</Filter>
     </ClCompile>
     <ClCompile Include="BodyComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Components\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@ CGameApplication::CGameApplication(void)
 	m_pDepthStencelView=NULL;
 	m_pDepthStencilTexture=NULL;
 	m_pGameObjectManager=new CGameObjectManager();
+	bool debug=0;
 }
 
 CGameApplication::~CGameApplication(void)
@@ -282,10 +283,11 @@ bool CGameApplication::initGame()
 	CAudioListenerComponent *pListener2=new CAudioListenerComponent();
 	pDebugCameraGameObject->addComponent(pListener2);
 
-	//pDebugCameraGameObject->getComponent("pCamera")->disable();
+	
 
 	m_pGameObjectManager->addGameObject(pDebugCameraGameObject);
 
+	pDebugCameraGameObject->getComponent("pCamera2")->disable();
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
@@ -399,7 +401,7 @@ void CGameApplication::update()
 	m_Timer.update();
 
 	CAudioSystem::getInstance().update();
-	bool debug=0;
+	
 
 
 
