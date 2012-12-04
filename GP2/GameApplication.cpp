@@ -14,7 +14,6 @@ CGameApplication::CGameApplication(void)
 	m_pDepthStencelView=NULL;
 	m_pDepthStencilTexture=NULL;
 	m_pGameObjectManager=new CGameObjectManager();
-	//bool debug=0;
 }
 
 CGameApplication::~CGameApplication(void)
@@ -77,11 +76,15 @@ void CGameApplication::contactPointCallback (const hkpContactPointEvent &event)
 	hkpRigidBody *pBody=event.getBody(0);
 	hkpRigidBody *pBody2=event.getBody(1);
 
-	CGameObject *pGameObject1=(CGameObject*)pBody->getUserData();
-	CGameObject *pGameObject2=(CGameObject*)pBody2->getUserData();
+	//CGameObject *pGameObject1=(CGameObject*)pBody->getUserData();
+	//CGameObject *pGameObject2=(CGameObject*)pBody2->getUserData();
+
+	CGameObject *pTestGameObject=(CGameObject*)pBody->getUserData();
+	CGameObject *pTestCGameObject=(CGameObject*)pBody2->getUserData();
+
 
 	//Do something with the game objects
-	pBody->clone();
+	
 	//m_pGameObjectManager->findGameObject("TestSO")->getTransform()->setRotation(90.0f,90.0f,90.0f);	
 }
 
@@ -132,6 +135,7 @@ bool CGameApplication::initGame()
 
 	//create box
 	CBoxCollider *pBox= new CBoxCollider();
+
 	pBox->setExtents(10.0f,10.0f,10.0f);
 	pTestGameObject->addComponent(pBox);
 
@@ -151,14 +155,16 @@ bool CGameApplication::initGame()
 	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
+
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//create game object
+	CGameObject *pTestCGameObject=new CGameObject();
 
-	pTestGameObject=new CGameObject;
-	pTestGameObject->setName("TestPO");
-	pTestGameObject->getTransform()->setPosition(0.0f,0.0f,5.0f);
+	pTestCGameObject=new CGameObject;
+	pTestCGameObject->setName("TestPO");
+	pTestCGameObject->getTransform()->setPosition(0.0f,0.0f,5.0f);
 
 	//addMaterial
 	pMaterial=new CMaterialComponent();
@@ -169,33 +175,33 @@ bool CGameApplication::initGame()
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
 	pMaterial->loadBumpTexture("armoredrecon_N.png");
 	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
-	pTestGameObject->addComponent(pMaterial);
+	pTestCGameObject->addComponent(pMaterial);
 
 	
 	//create box
 	CBoxCollider *pBox2= new CBoxCollider();
 	pBox2->setExtents(10.0f,10.0f,10.0f);
-	pTestGameObject->addComponent(pBox2);
+	pTestCGameObject->addComponent(pBox2);
 	
 
 
 	//create body make it fixed so no gravity effects it
 	CBodyComponent *pBody2=new CBodyComponent();
 	pBody2->setFixed(true);
-	pTestGameObject->addComponent(pBody2);
+	pTestCGameObject->addComponent(pBody2);
 
 
 	//Create Mesh
 	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
-	pTestGameObject->addComponent(pMesh);
+	pTestCGameObject->addComponent(pMesh);
 
-	//CMeshCollider *pMeshC = new CMeshCollider(m_pD3D10Device);
+	//CMeshCollider *pMeshC = new CMeshCollider();
 	//pTestGameObject->addComponent(pMeshC);
 
 
 	//add the game object
-	m_pGameObjectManager->addGameObject(pTestGameObject);
+	m_pGameObjectManager->addGameObject(pTestCGameObject);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/*
