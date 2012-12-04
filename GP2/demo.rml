@@ -5,8 +5,8 @@
 		<style>
 			body
 			{
-				width: 300px;
-				height: 225px;
+				width: 3000px;
+				height: 2250px;
 				
 				margin: auto;
 			}
@@ -20,9 +20,27 @@
 			{
 				text-align: left;
 			}
+      
+      button
+      {
+        icon-decorator: image;
+        icon-image-src: button.png;
+      }
 		</style>
 	</head>
 	<body template="window">
-		This is a sample.
+    <p>
+      Main Menu Bitches.
+    </p>
+    <p>
+      No idead what im doing :P
+    </p>
+    <p>
+      <button id="restart">Restart</button>
+    </p>
+    <p>
+      <button id="quit">Quit</button>
+    </p>
+    
 	</body>
 </rml>
