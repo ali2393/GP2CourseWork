@@ -85,6 +85,8 @@ void CGameApplication::contactPointCallback (const hkpContactPointEvent &event)
 
 	//Do something with the game objects
 	
+	pTestGameObject->getTransform()->setRotation(90.0f,90.0f,90.0f);;
+
 	//m_pGameObjectManager->findGameObject("TestSO")->getTransform()->setRotation(90.0f,90.0f,90.0f);	
 }
 
@@ -291,6 +293,8 @@ bool CGameApplication::initGame()
 	pBackground3->setStream(false);
 	pBackground3->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground3);
+
+
 	CAudioListenerComponent *pListener=new CAudioListenerComponent();
 	pCameraGameObject->addComponent(pListener);
 
