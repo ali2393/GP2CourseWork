@@ -175,6 +175,7 @@ bool CGameApplication::initGame()
 	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
 	pCamera->setFarClip(1000.0f);
 	pCamera->setNearClip(0.1f);
+	pCamera->disable();
 	pCamera->setParent(pPlayerGameObject);
 	pPlayerGameObject->addComponent(pCamera);
 
@@ -196,7 +197,7 @@ bool CGameApplication::initGame()
 	m_pGameObjectManager->addGameObject(pPlayerGameObject);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*
+	
 
 	// Debug Camera Set up
 	CGameObject *pDeBugGameObject=new CGameObject();
@@ -215,8 +216,10 @@ bool CGameApplication::initGame()
 	pDebugCamera->setAspectRatio((float)(vp.Width/vp.Height));
 	pDebugCamera->setFarClip(1000.0f);
 	pDebugCamera->setNearClip(0.1f);
+	pDebugCamera->enable();
 	pDeBugGameObject->addComponent(pCamera);
-	*/
+	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	CGameObject *pLightGameObject=new CGameObject();
@@ -342,31 +345,51 @@ void CGameApplication::update()
 		//Strafing Right
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*3,0.0f,0.0f);
 	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
 	{
 		//Strafing Left
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
 	}
+
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{
 		//Moving Forward
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
 	}
+
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
 	{
 		//Moving Back
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
 	}
+
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'E'))
 	{
 		//Rotate on the z axis left
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
 	}	
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'Q'))
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'Q'))
 	{
 		//Rotate on the z axis right
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
 	}
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'R'))
+	{
+		m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->enable();
+		CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
+		m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->disable();
+
+	}
+	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'F'))
+	{	
+		m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->enable();
+		CCameraComponent *pDebugCamera=m_pGameObjectManager->getMainCamera();
+		m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->disable();
+	};	
+
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 }
 

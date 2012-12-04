@@ -98,6 +98,12 @@ public:
 		m_vecScale.y+=y;
 		m_vecScale.z+=z;
 	};
+
+	void moveForward ()
+	{
+		
+	};
+
 private:
 	//vectors
 	D3DXVECTOR3 m_vecPosition;
