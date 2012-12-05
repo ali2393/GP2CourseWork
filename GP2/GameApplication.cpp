@@ -125,6 +125,7 @@ void CGameApplication::initMenu()
 
 	m_pMenu =  CGUIManager::getInstance().loadGUI("demo.ml");
 	m_pInGameGUI = CGUIManager::getInstance().loadGUI("winow.rml");
+	//m_pPause = CGUIManager::getInstance().loadGUI("pause.rml");
 
 	m_pGameObjectManager->init();
 
@@ -320,8 +321,30 @@ void CGameApplication::render()
 void CGameApplication::update()
 {
 	m_Timer.update();
-	CGUIManager::getInstance().update();
+	//CGUIManager::getInstance().update();
 
+	switch (m_GameState)
+	{
+		case Menu:
+		{
+			updateMenu();
+			break;
+		}
+		case Play:
+		{
+			updateGameMain();
+			break;
+
+		}
+	}
+	
+	m_pGameObjectManager->update(m_Timer.getElapsedTime());
+
+}
+
+void CGameApplication::updateGameMain()
+{
+	m_pInGameGUI->Show();
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
 	{
 		//play sound
@@ -346,15 +369,26 @@ void CGameApplication::update()
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
 		pTransform->rotate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
 	}
-	m_pGameObjectManager->update(m_Timer.getElapsedTime());
-
+	/*if (CInput::getInstance().getKeyboard()->isKeyDown((int)'P'))
+		{
+			if (m_GameState==Play){
+				m_pInGameGUI->Hide();
+				m_GameState=Pause;
+				m_pPause->Show();
+			}
+		}
+	*/
 }
 
-void CGameApplication::updateGameMain()
+void CGameApplication::updateMenu()
 {
-	m_pInGameGUI->Show();
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)"Return"))
+	{
+		m_pMenu->Hide();
+		m_GameState=Play;
+		initGameMain();
+	}
 }
-
 
 
 bool CGameApplication::initInput()

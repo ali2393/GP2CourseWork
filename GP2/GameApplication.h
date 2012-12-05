@@ -50,6 +50,7 @@ private:
 
 	void updateMenu();
 	void updateGameMain();
+	void updatePause();
 
 private:
 	//Graphics
@@ -70,6 +71,7 @@ private:
 
 	Rocket::Core::ElementDocument *m_pMenu;
 	Rocket::Core::ElementDocument *m_pInGameGUI;
+	Rocket::Core::ElementDocument *m_pPause;
 
 	GameState m_GameState;
 
