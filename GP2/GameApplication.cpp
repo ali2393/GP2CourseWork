@@ -327,6 +327,7 @@ void CGameApplication::render()
 void CGameApplication::update()
 {
 	m_Timer.update();
+	CInput::getInstance().getJoypad(0)->update();
 
 	//Moving the mouse about
 	CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
@@ -339,9 +340,10 @@ void CGameApplication::update()
 		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime());
 		pCamera->pitch(-mouseDeltaY*m_Timer.getElapsedTime());
 	}
+	//int playerIndex = 1;
 
 	//Input D A W S R.
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D')/*CJoypad::getInstance(0).getLeftThumbStickX()>0*/)
 	{
 		//Strafing Right
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*3,0.0f,0.0f);

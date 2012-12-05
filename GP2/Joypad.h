@@ -30,9 +30,22 @@ public:
 	{
 		return m_fRightThumbstickY;
 	};
+
+	static CJoypad& getInstance(int index)
+	{
+		static CJoypad instance;
+		return instance;
+	};
 private:
 	XINPUT_STATE m_JoypadState;
 	int m_iIndex;
+
+	CJoypad();
+
+	CJoypad(CJoypad const&){};
+	void operator=(CJoypad const&){};
+
+	CJoypad *m_pJoypads;
 
 	float m_fLeftThumbstickX;
 	float m_fLeftThumbstickY;

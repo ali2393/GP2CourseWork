@@ -45,5 +45,4 @@ private:
 	CKeyboard * m_pKeyboard;
 	CMouse * m_pMouse;
 	CJoypad **m_pJoypads;
-
 };

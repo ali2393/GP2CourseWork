@@ -1,6 +1,7 @@
 #include "Input.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Joypad.h"
 
 CInput::CInput()
 {
@@ -18,11 +19,12 @@ CInput::~CInput()
 	{
 		delete m_pMouse;
 		m_pMouse=0;
-	}
+	}	
 }
 
 void CInput::init()
 {
 	m_pKeyboard=new CKeyboard();
 	m_pMouse=new CMouse();
+	//m_pJoypads=new CJoypad(1);
 }
