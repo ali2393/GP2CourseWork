@@ -72,65 +72,6 @@ bool CGameApplication::initGUI()
 	return true;
 }
 
-
-bool CGameApplication::initGame()
-{
-    // Set primitive topology, how are we going to interpet the vertices in the vertex buffer - BMD
-    //http://msdn.microsoft.com/en-us/library/bb173590%28v=VS.85%29.aspx - BMD
-    m_pD3D10Device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
-
-	initMenu();
-
-	m_Timer.start();
-
-	return true;
-}
-
-
-void CGameApplication::initMenu()
-{
-    m_pGameObjectManager->clear();
-	CGameObject *pTestGameObject=new CGameObject();
-	//Set the name
-	pTestGameObject->setName("Sky");
-	CMeshComponent *pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"sphere.fbx");
-	//CMeshComponent *pMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
-	pMesh->SetRenderingDevice(m_pD3D10Device);
-	CMaterialComponent *pMaterial=new CMaterialComponent();
-	pMaterial=new CMaterialComponent();
-	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Environment.fx");
-	pMaterial->loadEnvironmentTexture("Mars.dds");
-	pTestGameObject->addComponent(pMaterial);
-	pTestGameObject->addComponent(pMesh);
-
-	CGameObject *pCameraGameObject=new CGameObject();
-	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
-	pCameraGameObject->setName("Camera");
-
-	D3D10_VIEWPORT vp;
-	UINT numViewports=1;
-	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
-
-	CCameraComponent *pCamera=new CCameraComponent();
-	pCamera->setUp(0.0f,1.0f,0.0f);
-	pCamera->setLookAt(0.0f,0.0f,0.0f);
-	pCamera->setFOV(D3DX_PI*0.25f);
-	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
-	pCamera->setFarClip(1000.0f);
-	pCamera->setNearClip(0.1f);
-	pCameraGameObject->addComponent(pCamera);
-
-	m_pGameObjectManager->addGameObject(pCameraGameObject);
-
-	m_pMenu =  CGUIManager::getInstance().loadGUI("demo.ml");
-	m_pInGameGUI = CGUIManager::getInstance().loadGUI("winow.rml");
-	//m_pPause = CGUIManager::getInstance().loadGUI("pause.rml");
-
-	m_pGameObjectManager->init();
-
-}
-
 void CGameApplication::initGameMain()
 {
 	m_pGameObjectManager->clear();
@@ -233,6 +174,64 @@ void CGameApplication::initGameMain()
 }
 
 
+void CGameApplication::initMenu()
+{
+    m_pGameObjectManager->clear();
+	CGameObject *pTestGameObject=new CGameObject();
+	//Set the name
+	pTestGameObject->setName("Sky");
+	CMeshComponent *pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"sphere.fbx");
+	//CMeshComponent *pMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	CMaterialComponent *pMaterial=new CMaterialComponent();
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Environment.fx");
+	pMaterial->loadEnvironmentTexture("Mars.dds");
+	pTestGameObject->addComponent(pMaterial);
+	pTestGameObject->addComponent(pMesh);
+
+	CGameObject *pCameraGameObject=new CGameObject();
+	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
+	pCameraGameObject->setName("Camera");
+
+	D3D10_VIEWPORT vp;
+	UINT numViewports=1;
+	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
+
+	CCameraComponent *pCamera=new CCameraComponent();
+	pCamera->setUp(0.0f,1.0f,0.0f);
+	pCamera->setLookAt(0.0f,0.0f,0.0f);
+	pCamera->setFOV(D3DX_PI*0.25f);
+	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
+	pCamera->setFarClip(1000.0f);
+	pCamera->setNearClip(0.1f);
+	pCameraGameObject->addComponent(pCamera);
+
+	m_pGameObjectManager->addGameObject(pCameraGameObject);
+
+	m_pMenu =  CGUIManager::getInstance().loadGUI("demo.rml");
+	m_pInGameGUI = CGUIManager::getInstance().loadGUI("window.rml");
+	m_pPause = CGUIManager::getInstance().loadGUI("cursor.rml");
+	m_pMenu->Show();
+
+	m_pGameObjectManager->init();
+
+}
+
+bool CGameApplication::initGame()
+{
+    // Set primitive topology, how are we going to interpet the vertices in the vertex buffer - BMD
+    //http://msdn.microsoft.com/en-us/library/bb173590%28v=VS.85%29.aspx - BMD
+    m_pD3D10Device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+
+	initMenu();
+
+	m_Timer.start();
+
+	return true;
+}
+
 void CGameApplication::run()
 {
 	while(m_pWindow->running())
@@ -318,29 +317,6 @@ void CGameApplication::render()
     m_pSwapChain->Present( 0, 0 );
 }
 
-void CGameApplication::update()
-{
-	m_Timer.update();
-	//CGUIManager::getInstance().update();
-
-	switch (m_GameState)
-	{
-		case Menu:
-		{
-			updateMenu();
-			break;
-		}
-		case Play:
-		{
-			updateGameMain();
-			break;
-
-		}
-	}
-	
-	m_pGameObjectManager->update(m_Timer.getElapsedTime());
-
-}
 
 void CGameApplication::updateGameMain()
 {
@@ -369,20 +345,20 @@ void CGameApplication::updateGameMain()
 		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
 		pTransform->rotate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
 	}
-	/*if (CInput::getInstance().getKeyboard()->isKeyDown((int)'P'))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'P'))
 		{
-			if (m_GameState==Play){
+			if (m_GameState==Play)
+			{
 				m_pInGameGUI->Hide();
 				m_GameState=Pause;
 				m_pPause->Show();
 			}
 		}
-	*/
 }
 
 void CGameApplication::updateMenu()
 {
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)"Return"))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'G'))
 	{
 		m_pMenu->Hide();
 		m_GameState=Play;
@@ -390,6 +366,47 @@ void CGameApplication::updateMenu()
 	}
 }
 
+void CGameApplication::updatePause()
+{
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'O'))
+		{
+			if (m_GameState==Pause)
+			{
+				m_pPause->Hide();
+				m_GameState=Play;
+				m_pInGameGUI->Show();
+			}
+		}
+}
+
+void CGameApplication::update()
+{
+	m_Timer.update();
+	//CGUIManager::getInstance().update();
+
+	switch (m_GameState)
+	{
+		case Menu:
+		{
+			updateMenu();
+			break;
+		}
+		case Play:
+		{
+			updateGameMain();
+			break;
+
+		}
+		case Pause:
+		{
+			updatePause();
+			break;
+		}
+	}
+	
+	m_pGameObjectManager->update(m_Timer.getElapsedTime());
+
+}
 
 bool CGameApplication::initInput()
 {

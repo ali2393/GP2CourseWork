@@ -2,8 +2,6 @@
 	<head>
 		<title>Demo</title>
 		<link type="text/template" href="window.rml" />
-    <link type="text/rcss" href="rkt.rcss"/>
-    <link type="text/rcss" href="invader.rcss"/>
 		<style>
 			body
 			{
@@ -36,12 +34,6 @@
     </p>
     <p>
       No idead what im doing..
-    </p>
-    <p>
-      <button id="play">Play</button>
-    </p>
-    <p>
-      <button id="quit">Quit</button>
     </p>
     
 	</body>
