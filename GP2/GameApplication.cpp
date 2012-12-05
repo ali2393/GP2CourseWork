@@ -107,7 +107,7 @@ bool CGameApplication::initGame()
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
 	pMaterial->setEffectFilename("Environment.fx");
-	pMaterial->loadEnvironmentTexture("Mars.dds");
+	pMaterial->loadEnvironmentTexture("misc004.jpg");
 	pTestGameObject->addComponent(pMaterial);
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
@@ -158,6 +158,12 @@ bool CGameApplication::initGame()
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 
+
+	//CMeshCollider *pCMesh=new CMeshCollider;
+	
+	//pTestGameObject->addComponent(pCMesh);
+
+
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +212,7 @@ bool CGameApplication::initGame()
 	m_pGameObjectManager->addGameObject(pTestCGameObject);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/*
+	
 	//create game object
 	pTestGameObject=new CGameObject;
 	pTestGameObject->setName("TestRoom");
@@ -224,12 +230,12 @@ bool CGameApplication::initGame()
 	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
 	pTestGameObject->addComponent(pMaterial);
 	//Create Mesh
-	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"RoomforTest.fbx");
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"LobbyForModel.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
-	*/
+	
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pDebugCameraGameObject=new CGameObject();
@@ -275,25 +281,25 @@ bool CGameApplication::initGame()
 	pCamera->setFarClip(1000.0f);
 	pCamera->setNearClip(0.1f);
 	pCameraGameObject->addComponent(pCamera);
-
+	/*
 	CAudioSourceComponent *pBackground1=new CAudioSourceComponent();
-	pBackground1->setFilename("background1.wav");
+	pBackground1->setFilename("background2.wav");
 	pBackground1->setStream(false);
 	pBackground1->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground1);
-
+	
 	CAudioSourceComponent *pBackground2=new CAudioSourceComponent();
-	pBackground2->setFilename("background2.wav");
+	pBackground2->setFilename("background1.wav");
 	pBackground2->setStream(false);
 	pBackground2->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground2);
-	
+	*/
 	CAudioSourceComponent *pBackground3=new CAudioSourceComponent();
 	pBackground3->setFilename("background3.wav");
 	pBackground3->setStream(false);
 	pBackground3->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground3);
-
+	
 
 	CAudioListenerComponent *pListener=new CAudioListenerComponent();
 	pCameraGameObject->addComponent(pListener);
@@ -316,11 +322,10 @@ bool CGameApplication::initGame()
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
 	
-	pBackground1->play();
-	pBackground2->play();
+//	pBackground1->play();
+//	pBackground2->play();
 	pBackground3->play();
 	
-
 	m_Timer.start();
 	return true;
 }
@@ -458,17 +463,16 @@ void CGameApplication::update()
 		CCameraComponent *pCamera2=m_pGameObjectManager->getMainCamera();
 
 		m_pGameObjectManager->setMainCamera(pCamera2);
-		//m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera2")->disable;	
-		//m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->disable();
-			
+		m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->disable();
+		m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera2")->enable();	
 	}
 	else if(CInput::getInstance().getKeyboard()->keyPressed((int)'P'))
 	{
 		CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
 
 		m_pGameObjectManager->setMainCamera(pCamera);
-		//m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera2")->disable();
-		//m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->enable();
+		m_pGameObjectManager->findGameObject("DebugCamera")->getComponent("pCamera2")->disable();
+		m_pGameObjectManager->findGameObject("Camera")->getComponent("pCamera")->enable();
 	}
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 
@@ -648,12 +652,12 @@ bool CGameApplication::initGraphics()
 	 // Setup the viewport 
 	//http://msdn.microsoft.com/en-us/library/bb172500%28v=vs.85%29.aspx - BMD
     D3D10_VIEWPORT vp2;
-    vp.Width = width;
-    vp.Height = height;
-    vp.MinDepth = 0.0f;
-    vp.MaxDepth = 1.0f;
-    vp.TopLeftX = 0;
-    vp.TopLeftY = 0;
+    vp2.Width = width;
+    vp2.Height = height;
+    vp2.MinDepth = 0.0f;
+    vp2.MaxDepth = 1.0f;
+    vp2.TopLeftX = 0;
+    vp2.TopLeftY = 0;
 
 
 
