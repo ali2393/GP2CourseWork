@@ -224,9 +224,9 @@ bool CGameApplication::initGame()
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
 	pMaterial->setEffectFilename("Parallax.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
-	pMaterial->loadDiffuseTexture("texture.jpg");
+	pMaterial->loadDiffuseTexture("metals002x04.jpg");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
-	pMaterial->loadBumpTexture("armoredrecon_N.png");
+	pMaterial->loadBumpTexture("metals002x04b.jpg");
 	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
 	pTestGameObject->addComponent(pMaterial);
 	//Create Mesh
