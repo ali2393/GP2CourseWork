@@ -49,7 +49,7 @@ private:
 	void update();
 
 	void contactPointCallback(const hkpContactPointEvent &event);
-
+	void createBox(float x,float y,float z);
 private:
 	//Graphics
 	ID3D10Device * m_pD3D10Device;

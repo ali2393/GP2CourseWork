@@ -32,6 +32,24 @@ public:
 	//Update method
 	void update(float elapsedTime)
 	{
+		//Get the transform component
+		CBodyComponent *pBody=(CBodyComponent*)getParent()->getComponent("BodyComponent");
+		//If we have a rigid body
+		if (pBody)
+		{
+			//get the current position and rotation of the rigid body
+			hkVector4 pos=pBody->getRigidBody()->getPosition();
+			hkQuaternion rot=pBody->getRigidBody()->getRotation();
+
+			m_vecPosition.x=pos.getComponent(0);
+			m_vecPosition.y=pos.getComponent(1);
+			m_vecPosition.z=pos.getComponent(2);
+
+			m_quatRotation.x=rot.m_vec.getComponent(0);
+			m_quatRotation.y=rot.m_vec.getComponent(1);
+			m_quatRotation.z=rot.m_vec.getComponent(2);
+			m_quatRotation.w=rot.m_vec.getComponent(3);
+		}
 		//We are using Quaternion for rotation, no gimble lock
 		D3DXQuaternionRotationYawPitchRoll(&m_quatRotation,m_vecRotation.y,m_vecRotation.x,m_vecRotation.z);
 		//Build a rotation matrix, we can't use quaternions directly

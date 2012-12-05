@@ -11,12 +11,13 @@ public:
 	~CMeshCollider();
 
 	//set vertices
-	void setVertices(float *pVerts, int numVerts)
+	void setVertices(float *pVerts, int numVerts,int stride)
 	{
 		//vertex array
 		m_Verts=new float[3*numVerts];
 		//number of verts
 		m_NumVerts=numVerts;
+		m_Stride=stride;
 	};
 
 	//init method
@@ -24,4 +25,5 @@ public:
 private:
 	float * m_Verts;
 	int m_NumVerts;
+	int m_Stride;
 };

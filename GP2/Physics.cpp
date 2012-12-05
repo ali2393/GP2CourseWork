@@ -33,7 +33,7 @@ const float PhysicsUpdateTime=0.0166f;
 
 CPhysics::CPhysics()
 {
-	m_bVisualDebug=false;
+	m_bVisualDebug=true;
 	m_pWorld=NULL;
 	m_pVisualDebugger=NULL;
 	m_pContext=NULL;
@@ -55,7 +55,7 @@ void CPhysics::init()
 	//gravity
 	info.m_gravity.set( 0,-9.8f,0);
 	//broad phase world 
-	info.setBroadPhaseWorldSize( 1500.0f );
+	info.setBroadPhaseWorldSize( 15000.0f );
 	//Physics world creation
 	m_pWorld = new hkpWorld( info);
 	// Register all collision agents
@@ -90,8 +90,8 @@ void CPhysics::update(float updateTime)
 		//step the physics simulation
 		m_pWorld->stepDeltaTime(PhysicsUpdateTime);
 		//Update visual debugger
-		//if (m_bVisualDebug)
-		//	m_pVisualDebugger->step();
+		if (m_bVisualDebug)
+			m_pVisualDebugger->step();
 	}
 	
 }

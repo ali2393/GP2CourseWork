@@ -26,7 +26,7 @@ void CMeshCollider::init()
 		//number of verts
 		stridedVerts.m_numVertices = m_NumVerts;
 		//the size of the single vertex
-		stridedVerts.m_striding = 3*sizeof(float);
+		stridedVerts.m_striding = m_Stride;
 		//The actual vertices
 		stridedVerts.m_vertices = m_Verts;
 

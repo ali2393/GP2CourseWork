@@ -90,6 +90,44 @@ void CGameApplication::contactPointCallback (const hkpContactPointEvent &event)
 	//m_pGameObjectManager->findGameObject("TestSO")->getTransform()->setRotation(90.0f,90.0f,90.0f);	
 }
 
+//Only used for sample
+void CGameApplication::createBox(float x,float y,float z)
+{
+	//Create Game Object
+	CGameObject *pTestGameObject=new CGameObject();
+	pTestGameObject->getTransform()->setPosition(x,y,z);
+	//Set the name
+	pTestGameObject->setName("TestCube");
+	
+	//create material
+	CMaterialComponent *pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Transform.fx");
+
+	//Create geometry
+	CModelLoader modelloader;
+	//CGeometryComponent *pGeometry=modelloader.loadModelFromFile(m_pD3D10Device,"humanoid.fbx");
+	CMeshComponent *pGeometry=modelloader.createCube(m_pD3D10Device,1.0f,1.0f,1.0f);
+	
+	//create a box collider, this could be any collider
+	CBoxCollider *pBox=new CBoxCollider();
+	//set the size of the box
+	pBox->setExtents(1.0f,1.0f,1.0f);
+	//add collider
+	pTestGameObject->addComponent(pBox);
+
+	//create body
+	CBodyComponent *pBody=new CBodyComponent();
+	pTestGameObject->addComponent(pBody);
+
+	pGeometry->SetRenderingDevice(m_pD3D10Device);
+	//Add component
+	pTestGameObject->addComponent(pMaterial);
+	pTestGameObject->addComponent(pGeometry);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+}
+
 bool CGameApplication::initGame()
 {
     // Set primitive topology, how are we going to interpet the vertices in the vertex buffer - BMD
@@ -157,9 +195,6 @@ bool CGameApplication::initGame()
 	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
-
-
-	//CMeshCollider *pCMesh=new CMeshCollider;
 	
 	//pTestGameObject->addComponent(pCMesh);
 
@@ -318,6 +353,15 @@ bool CGameApplication::initGame()
 
 	m_pGameObjectManager->setMainLight(pLightComponent);
 
+
+		//start position
+	float startY=10.0f;
+	for (int i=0;i<10;i++)
+	{
+		//call create bi=ox
+		createBox(0.0f,(10.0f*i)+startY,0.0f);
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
@@ -418,6 +462,7 @@ void CGameApplication::update()
 	m_Timer.update();
 
 	CAudioSystem::getInstance().update();
+	CPhysics::getInstance().update(m_Timer.getElapsedTime());
 	
 
 
@@ -482,7 +527,7 @@ void CGameApplication::update()
 
 bool CGameApplication::initPhysics()
 {
-	hkVector4 Gravity;
+	hkVector4 Gravity=hkVector4(0.0f,-9.8f,0.0f);
 
 	CPhysics::getInstance().init();
 	//Add the Game Application
