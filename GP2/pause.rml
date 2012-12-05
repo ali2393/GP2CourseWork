@@ -1,0 +1,24 @@
+<rml>
+  <head>
+    <link type="text/rcss" href="rkt.rcss"/>
+    <link type="text/rcss" href="invader.rcss"/>
+  </head>
+  <body class="window">
+    <div id="title_bar">
+      <span id="title">Game Paused</span>
+    </div>
+    <div id="window">
+      <div id="content">
+        <p>
+        Game Is Paused.
+        </p>
+        <p>
+          Distance Traveled = ""
+        </p>
+        <p>
+          To resume game press 'O'
+        </p>
+      </div>
+    </div>
+  </body>
+</rml>

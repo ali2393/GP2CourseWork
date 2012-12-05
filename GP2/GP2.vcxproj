@@ -134,9 +134,11 @@
     <None Include="diffuse.fx" />
     <None Include="DirectionalLight.fx" />
     <None Include="Environment.fx" />
+    <None Include="game.rml" />
     <None Include="invader.rcss" />
     <None Include="menu.rml" />
     <None Include="Parallax.fx" />
+    <None Include="pause.rml" />
     <None Include="rkt.rcss" />
     <None Include="ScreenSpace.fx" />
     <None Include="Specular.fx" />

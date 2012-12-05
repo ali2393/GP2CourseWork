@@ -241,5 +241,11 @@
     <None Include="menu.rml">
       <Filter>GUIScripts</Filter>
     </None>
+    <None Include="pause.rml">
+      <Filter>GUIScripts</Filter>
+    </None>
+    <None Include="game.rml">
+      <Filter>GUIScripts</Filter>
+    </None>
   </ItemGroup>
 </Project>
