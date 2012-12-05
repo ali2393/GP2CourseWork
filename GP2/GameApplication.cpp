@@ -326,7 +326,7 @@ void CGameApplication::render()
 void CGameApplication::update()
 {
 	m_Timer.update();
-	CInput::getInstance().getJoypad(0 )->update();
+	CInput::getInstance().getJoypad(0)->update();
 
 	m_bUsingJoypad=CInput::getInstance().getJoypad(0)->isConnected();
 
