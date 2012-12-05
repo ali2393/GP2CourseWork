@@ -28,8 +28,8 @@ void CCameraComponent::update(float elapsedTime)
 {
 	CTransformComponent *pTransform=m_pParent->getTransform();
 
-	D3DXMatrixLookAtLH(&m_matView,&pTransform->getPosition(),&m_vecLookAt,&m_vecUp);
-	D3DXMatrixPerspectiveFovLH(&m_matProjection,m_fAspectRatio,m_fFOV,m_fNearClip,m_fFarClip);
+	//D3DXMatrixLookAtLH(&m_matView,&pTransform->getPosition(),&m_vecLookAt,&m_vecUp);
+	//D3DXMatrixPerspectiveFovLH(&m_matProjection,m_fAspectRatio,m_fFOV,m_fNearClip,m_fFarClip);
 
 	//Calculate look at based on yaw & pitch   
 

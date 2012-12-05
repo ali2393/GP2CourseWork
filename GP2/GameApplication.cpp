@@ -176,7 +176,7 @@ bool CGameApplication::initGame()
 	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
 	pCamera->setFarClip(1000.0f);
 	pCamera->setNearClip(0.1f);
-	pCamera->disable();
+	//pCamera->disable();
 	pCamera->setParent(pPlayerGameObject);
 	pPlayerGameObject->addComponent(pCamera);
 
@@ -199,10 +199,8 @@ bool CGameApplication::initGame()
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-
 	// Debug Camera Set up
 	CGameObject *pDeBugGameObject=new CGameObject();
-	
 	pDeBugGameObject->setName("Debug");
 	pDeBugGameObject->getTransform()->setPosition(0.0f,0.0f,-30.0f);
 
@@ -217,8 +215,8 @@ bool CGameApplication::initGame()
 	pDebugCamera->setAspectRatio((float)(vp.Width/vp.Height));
 	pDebugCamera->setFarClip(1000.0f);
 	pDebugCamera->setNearClip(0.1f);
-	pDebugCamera->enable();
-	pDeBugGameObject->addComponent(pCamera);
+	pDeBugGameObject->addComponent(pDebugCamera);
+	m_pGameObjectManager->addGameObject(pDeBugGameObject);
 	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -327,41 +325,51 @@ void CGameApplication::render()
 void CGameApplication::update()
 {
 	m_Timer.update();
-	CInput::getInstance().getJoypad(0)->update();
+	CInput::getInstance().getJoypad(0 )->update();
+
+	m_bUsingJoypad=CInput::getInstance().getJoypad(0)->isConnected();
 
 	//Moving the mouse about
 	CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
 	if (pCamera)
 	{	
 		//getting the mouses position
-		float mouseDeltaX=CInput::getInstance().getMouse()->getRelativeMouseX();
-		float mouseDeltaY=CInput::getInstance().getMouse()->getRelativeMouseY();
+		float yaw=CInput::getInstance().getMouse()->getRelativeMouseX();
+		float pitch=CInput::getInstance().getMouse()->getRelativeMouseY();
+		if (m_bUsingJoypad){
+			//if we are using a joypad
+			yaw=CInput::getInstance().getJoypad(0)->getRightThumbStickX();
+			pitch=CInput::getInstance().getJoypad(0)->getRightThumbStickY();
+		}
 		//Pitching and Yaw
-		pCamera->yaw(mouseDeltaX*m_Timer.getElapsedTime());
-		pCamera->pitch(-mouseDeltaY*m_Timer.getElapsedTime());
+		pCamera->yaw(yaw*m_Timer.getElapsedTime());
+		pCamera->pitch(-pitch*m_Timer.getElapsedTime());
+
 	}
 	//int playerIndex = 1;
 
+	;
+
 	//Input D A W S R.
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D')/*CJoypad::getInstance(0).getLeftThumbStickX()>0*/)
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()>0 )
 	{
 		//Strafing Right
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*3,0.0f,0.0f);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()<0 )
 	{
 		//Strafing Left
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()>0 )
 	{
 		//Moving Forward
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()<0)
 	{
 		//Moving Back
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
@@ -381,6 +389,14 @@ void CGameApplication::update()
 
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'R'))
 	{
+		CGameObject * pCameraGO=m_pGameObjectManager->findGameObject("Player");
+		if (pCameraGO){
+			CCameraComponent *pCamera=(CCameraComponent *)pCameraGO->getComponent("CameraComponent");
+			if (pCamera)
+			{
+				m_pGameObjectManager->setMainCamera(pCamera);
+			}
+		}
 		//m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->enable();
 		//CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
 		//m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->disable();
@@ -388,6 +404,14 @@ void CGameApplication::update()
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'F'))
 	{	
+		CGameObject * pCameraGO=m_pGameObjectManager->findGameObject("Debug");
+		if (pCameraGO){
+			CCameraComponent *pCamera=(CCameraComponent *)pCameraGO->getComponent("CameraComponent");
+			if (pCamera)
+			{
+				m_pGameObjectManager->setMainCamera(pCamera);
+			}
+		}
 		//m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->enable();
 		//CCameraComponent *pDebugCamera=m_pGameObjectManager->getMainCamera();
 		//m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->disable();

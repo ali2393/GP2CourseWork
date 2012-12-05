@@ -49,4 +49,5 @@ private:
 	CGameObjectManager *m_pGameObjectManager;
 
 	CModelLoader modelloader;
+	bool m_bUsingJoypad;
 };

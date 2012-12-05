@@ -6,6 +6,7 @@
 class CJoypad
 {
 public:
+	CJoypad();
 	CJoypad(int index);
 	~CJoypad();
 
@@ -13,22 +14,22 @@ public:
 
 	float getLeftThumbStickX()
 	{
-		return m_fLeftThumbstickX;
+		return m_fLeftThumbstickXNormalized;
 	};
 
 	float getLeftThumbStickY()
 	{
-		return m_fLeftThumbstickY;
+		return m_fLeftThumbstickYNormalized;
 	};
 
 	float getRightThumbStickX()
 	{
-		return m_fRightThumbstickX;
+		return m_fRightThumbstickXNormalized;
 	};
 
 	float getRightThumbStickY()
 	{
-		return m_fRightThumbstickY;
+		return m_fRightThumbstickYNormalized;
 	};
 
 	static CJoypad& getInstance(int index)
@@ -36,11 +37,17 @@ public:
 		static CJoypad instance;
 		return instance;
 	};
+
+	bool isConnected()
+	{
+		return m_bIsConnected;
+	}
 private:
+	bool m_bIsConnected;
 	XINPUT_STATE m_JoypadState;
 	int m_iIndex;
 
-	CJoypad();
+
 
 	CJoypad(CJoypad const&){};
 	void operator=(CJoypad const&){};

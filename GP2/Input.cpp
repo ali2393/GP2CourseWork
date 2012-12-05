@@ -20,11 +20,27 @@ CInput::~CInput()
 		delete m_pMouse;
 		m_pMouse=0;
 	}	
+	if (m_pJoypads)
+	{
+		for (int i=0;i<MAX_NO_JOYPADS;i++)
+		{
+			if (m_pJoypads[i])
+			{
+				delete m_pJoypads[i];
+			}
+		}
+
+		delete [] m_pJoypads;
+	}
 }
 
 void CInput::init()
 {
 	m_pKeyboard=new CKeyboard();
 	m_pMouse=new CMouse();
-	//m_pJoypads=new CJoypad(1);
+	m_pJoypads=new CJoypad*[MAX_NO_JOYPADS];
+	for (int i=0;i<MAX_NO_JOYPADS;i++)
+	{
+		m_pJoypads[i]=new CJoypad(i);
+	}
 }

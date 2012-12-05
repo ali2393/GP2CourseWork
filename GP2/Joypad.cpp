@@ -3,9 +3,10 @@
 
 CJoypad::CJoypad(int index)
 {
-	//m_iIndex=index;
-	index=0;
+	m_iIndex=index;
+	//index=0;
 	ZeroMemory( &m_JoypadState, sizeof(XINPUT_STATE) );
+	m_bIsConnected=true;
 }
 
 CJoypad::~CJoypad()
@@ -18,6 +19,7 @@ void CJoypad::update()
     DWORD dwResult= XInputGetState( m_iIndex, &m_JoypadState );
 	if( dwResult == ERROR_SUCCESS )
 	{ 
+		m_bIsConnected=true;
 		//controller connected
 		m_fLeftThumbstickX=m_JoypadState.Gamepad.sThumbLX;
 		m_fLeftThumbstickY=m_JoypadState.Gamepad.sThumbLY;
@@ -36,6 +38,10 @@ void CJoypad::update()
 		{
 			m_fLeftMagnitude=0.0f;
 			m_fLeftNormalizedMagnitude=0.0f;
+			m_fLeftThumbstickX=0.0f;
+			m_fLeftThumbstickXNormalized=0.0f;
+			m_fLeftThumbstickY=0.0f;
+			m_fLeftThumbstickYNormalized=0.0f;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +63,10 @@ void CJoypad::update()
 		{
 			m_fRightMagnitude=0.0f;
 			m_fRightNormalizedMagnitude=0.0f;
+			m_fRightThumbstickX=0.0f;
+			m_fRightThumbstickXNormalized=0.0f;
+			m_fRightThumbstickY=0.0f;
+			m_fRightThumbstickYNormalized=0.0f;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -75,6 +85,7 @@ void CJoypad::update()
 		else
 			m_fLeftTrigger=0.0f;
 	}else{
-		// Controller is not connected 
+		// Controller is not connected
+		m_bIsConnected=false;
 	}
 }
