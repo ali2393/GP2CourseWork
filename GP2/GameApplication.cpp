@@ -203,7 +203,7 @@ bool CGameApplication::initGame()
 	// Debug Camera Set up
 	CGameObject *pDeBugGameObject=new CGameObject();
 	pDeBugGameObject->setName("Debug");
-	pDeBugGameObject->getTransform()->setPosition(0.0f,0.0f,-30.0f);
+	pDeBugGameObject->getTransform()->setPosition(0.0f,30.0f,-30.0f);
 
 	D3D10_VIEWPORT Db;
 	UINT numDbViewports=1;
@@ -349,25 +349,25 @@ void CGameApplication::update()
 	};
 
 	//Input D A W S R.
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()>0 )
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()>0.5)
 	{
 		//Strafing Right
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*3,0.0f,0.0f);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()<0 )
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()<0.5)
 	{
 		//Strafing Left
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()>0 )
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()>0.5)
 	{
 		//Moving Forward
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()<0)
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()<0.5)
 	{
 		//Moving Back
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
