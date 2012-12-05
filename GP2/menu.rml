@@ -30,10 +30,13 @@
 	</head>
 	<body template="window">
     <p>
-      Main Menu
+      Welcome to the game!!
     </p>
     <p>
-      No idead what im doing..
+      It's a bit broken righ now. Lets say it's in alpha....
+    </p>
+    <p>
+      Press 'G' to start.
     </p>
     
 	</body>

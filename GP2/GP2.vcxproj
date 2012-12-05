@@ -135,6 +135,7 @@
     <None Include="DirectionalLight.fx" />
     <None Include="Environment.fx" />
     <None Include="invader.rcss" />
+    <None Include="menu.rml" />
     <None Include="Parallax.fx" />
     <None Include="rkt.rcss" />
     <None Include="ScreenSpace.fx" />

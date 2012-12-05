@@ -5,11 +5,10 @@
 </head>
 <body class="window">
 	<div id="title_bar">
-			<span id="title">Hello</span>
+			<span id="title">Main Menu</span>
 	</div>
 	<div id="window">
 		<div id="content">
-      Hello
 		</div>
 	</div>
 </body>

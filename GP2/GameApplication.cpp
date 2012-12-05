@@ -210,7 +210,7 @@ void CGameApplication::initMenu()
 
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
 
-	m_pMenu =  CGUIManager::getInstance().loadGUI("demo.rml");
+	m_pMenu =  CGUIManager::getInstance().loadGUI("menu.rml");
 	m_pInGameGUI = CGUIManager::getInstance().loadGUI("window.rml");
 	m_pPause = CGUIManager::getInstance().loadGUI("cursor.rml");
 	m_pMenu->Show();

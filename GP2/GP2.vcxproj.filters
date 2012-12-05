@@ -238,5 +238,8 @@
     <None Include="Parallax.fx">
       <Filter>Effects</Filter>
     </None>
+    <None Include="menu.rml">
+      <Filter>GUIScripts</Filter>
+    </None>
   </ItemGroup>
 </Project>
