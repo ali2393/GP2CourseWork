@@ -107,7 +107,7 @@ bool CGameApplication::initGame()
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
 	pMaterial->setEffectFilename("Environment.fx");
-	pMaterial->loadEnvironmentTexture("misc004.jpg");
+	pMaterial->loadEnvironmentTexture("Mars.dds");
 	pTestGameObject->addComponent(pMaterial);
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
@@ -216,15 +216,15 @@ bool CGameApplication::initGame()
 	//create game object
 	pTestGameObject=new CGameObject;
 	pTestGameObject->setName("TestRoom");
-	pTestGameObject->getTransform()->setPosition(10.0f,10.0f,10.0f);
-	pTestGameObject->getTransform()->setRotation(135.0f,0.0f,135.0f);
+	pTestGameObject->getTransform()->setPosition(-2.5f,-2.5f,10.0f);
+	pTestGameObject->getTransform()->setRotation(90.0f,0.0f,0.0f);
 
 	//addMaterial
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
 	pMaterial->setEffectFilename("Parallax.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
-	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadDiffuseTexture("texture.jpg");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
 	pMaterial->loadBumpTexture("armoredrecon_N.png");
 	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
