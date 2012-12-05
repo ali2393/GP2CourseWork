@@ -165,6 +165,7 @@ bool CGameApplication::initGame()
 	pPlayerGameObject->setName("Player");
 	pPlayerGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
 
+	// setting Viewport
 	D3D10_VIEWPORT vp;
 	UINT numViewports=1;
 	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
@@ -194,7 +195,7 @@ bool CGameApplication::initGame()
 	CMeshComponent *pPlayerMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
 	pPlayerMesh->SetRenderingDevice(m_pD3D10Device);
 	pPlayerGameObject->addComponent(pPlayerMesh);
-	
+	//Adding the Game object
 	m_pGameObjectManager->addGameObject(pPlayerGameObject);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,10 +346,7 @@ void CGameApplication::update()
 		pCamera->yaw(yaw*m_Timer.getElapsedTime());
 		pCamera->pitch(-pitch*m_Timer.getElapsedTime());
 
-	}
-	//int playerIndex = 1;
-
-	;
+	};
 
 	//Input D A W S R.
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()>0 )
@@ -389,6 +387,7 @@ void CGameApplication::update()
 
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'R'))
 	{
+		//Change the camera to the player camera
 		CGameObject * pCameraGO=m_pGameObjectManager->findGameObject("Player");
 		if (pCameraGO){
 			CCameraComponent *pCamera=(CCameraComponent *)pCameraGO->getComponent("CameraComponent");
@@ -397,13 +396,11 @@ void CGameApplication::update()
 				m_pGameObjectManager->setMainCamera(pCamera);
 			}
 		}
-		//m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->enable();
-		//CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
-		//m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->disable();
 
 	}
 	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'F'))
 	{	
+		//Change the camera to the debug camera
 		CGameObject * pCameraGO=m_pGameObjectManager->findGameObject("Debug");
 		if (pCameraGO){
 			CCameraComponent *pCamera=(CCameraComponent *)pCameraGO->getComponent("CameraComponent");
@@ -412,9 +409,6 @@ void CGameApplication::update()
 				m_pGameObjectManager->setMainCamera(pCamera);
 			}
 		}
-		//m_pGameObjectManager->findGameObject("Debug")->getComponent("pDebugCamera")->enable();
-		//CCameraComponent *pDebugCamera=m_pGameObjectManager->getMainCamera();
-		//m_pGameObjectManager->findGameObject("Player")->getComponent("pCamera")->disable();
 	};	
 
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
