@@ -17,6 +17,16 @@
 
 #include <vector>
 
+
+enum GameState
+{
+	Menu,
+	Play,
+	Pause,
+	Quit
+};
+
+
 using namespace std;
 
 class CGameApplication
@@ -34,6 +44,13 @@ private:
 	bool initWindow();
 	void render();
 	void update();
+
+	void initMenu();
+	void initGameMain();
+
+	void updateMenu();
+	void updateGameMain();
+
 private:
 	//Graphics
 	ID3D10Device * m_pD3D10Device;
@@ -50,4 +67,13 @@ private:
 	CGameObjectManager *m_pGameObjectManager;
 
 	CModelLoader modelloader;
+
+	Rocket::Core::ElementDocument *m_pMenu;
+	Rocket::Core::ElementDocument *m_pInGameGUI;
+
+	GameState m_GameState;
+
+
+
+
 };

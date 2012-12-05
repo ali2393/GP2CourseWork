@@ -13,6 +13,24 @@ CGUIManager::~CGUIManager()
 
 void CGUIManager::destroy()	
 {
+
+	vector<Rocket::Core::ElementDocument*>::iterator iter;
+	iter = m_GUIScreens.begin();
+	while(iter!=m_GUIScreens.end())
+	{
+		if((*iter))
+		{
+			(*iter)->RemoveReference();
+			iter=m_GUIScreens.erase(iter);
+		}
+		else
+		{
+			iter++;
+		}
+	}
+
+	m_GUIScreens.clear();
+
 	m_pContext->RemoveReference();
 	Rocket::Core::Shutdown();
 
@@ -50,6 +68,7 @@ void CGUIManager::init(ID3D10Device * pD3D10Device,int width,int height)
 		return;
 	}
 	Rocket::Controls::Initialise();
+	/*
 	Rocket::Debugger::Initialise(m_pContext);
 	Rocket::Debugger::SetVisible(false);
 
@@ -60,6 +79,15 @@ void CGUIManager::init(ID3D10Device * pD3D10Device,int width,int height)
 		document->Show();
 		document->RemoveReference();
 	}
+	*/
+
+}
+
+Rocket::Core::ElementDocument* CGUIManager::loadGUI(const string& name)
+{
+	Rocket::Core::ElementDocument* document = m_pContext->LoadDocument(name.c_str());
+	m_GUIScreens.push_back(document);
+	return document;
 }
 
 void CGUIManager::update()

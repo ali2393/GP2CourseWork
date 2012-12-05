@@ -2,11 +2,13 @@
 	<head>
 		<title>Demo</title>
 		<link type="text/template" href="window.rml" />
+    <link type="text/rcss" href="rkt.rcss"/>
+    <link type="text/rcss" href="invader.rcss"/>
 		<style>
 			body
 			{
-				width: 300px;
-				height: 225px;
+				width: 3000px;
+				height: 2250px;
 				
 				margin: auto;
 			}
@@ -30,13 +32,13 @@
 	</head>
 	<body template="window">
     <p>
-      Main Menu Bitches.
+      Main Menu
     </p>
     <p>
-      No idead what im doing :P
+      No idead what im doing..
     </p>
     <p>
-      <button id="restart">Restart</button>
+      <button id="play">Play</button>
     </p>
     <p>
       <button id="quit">Quit</button>
