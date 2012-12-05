@@ -7,6 +7,20 @@ CJoypad::CJoypad(int index)
 	//index=0;
 	ZeroMemory( &m_JoypadState, sizeof(XINPUT_STATE) );
 	m_bIsConnected=true;
+	m_fLeftThumbstickX=0.0f;
+	m_fLeftThumbstickY=0.0f;
+	m_fLeftThumbstickXNormalized=0.0f;
+	m_fLeftThumbstickYNormalized=0.0f;
+	m_fLeftMagnitude=0.0f;
+	m_fLeftNormalizedMagnitude=0.0f;
+	m_fRightThumbstickX=0.0f;
+	m_fRightThumbstickY=0.0f;
+	m_fRightThumbstickXNormalized=0.0f;
+	m_fRightThumbstickYNormalized=0.0f;
+	m_fRightMagnitude=0.0f;
+	m_fRightNormalizedMagnitude=0.0f;
+	m_fRightTrigger=0.0f;
+	m_fLeftTrigger=0.0f;
 }
 
 CJoypad::~CJoypad()
@@ -87,5 +101,19 @@ void CJoypad::update()
 	}else{
 		// Controller is not connected
 		m_bIsConnected=false;
+		m_fLeftThumbstickX=0.0f;
+		m_fLeftThumbstickY=0.0f;
+		m_fLeftThumbstickXNormalized=0.0f;
+		m_fLeftThumbstickYNormalized=0.0f;
+		m_fLeftMagnitude=0.0f;
+		m_fLeftNormalizedMagnitude=0.0f;
+		m_fRightThumbstickX=0.0f;
+		m_fRightThumbstickY=0.0f;
+		m_fRightThumbstickXNormalized=0.0f;
+		m_fRightThumbstickYNormalized=0.0f;
+		m_fRightMagnitude=0.0f;
+		m_fRightNormalizedMagnitude=0.0f;
+		m_fRightTrigger=0.0f;
+		m_fLeftTrigger=0.0f;
 	}
 }

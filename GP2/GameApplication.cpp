@@ -326,7 +326,7 @@ void CGameApplication::render()
 void CGameApplication::update()
 {
 	m_Timer.update();
-	CInput::getInstance().getJoypad(0)->update();
+	CInput::getInstance().getJoypad(0 )->update();
 
 	m_bUsingJoypad=CInput::getInstance().getJoypad(0)->isConnected();
 
@@ -349,25 +349,25 @@ void CGameApplication::update()
 	};
 
 	//Input D A W S R.
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()>0.5)
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D') || (CInput::getInstance().getJoypad(0)->getLeftThumbStickX()>0 && m_bUsingJoypad) )
 	{
 		//Strafing Right
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*3,0.0f,0.0f);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()<0.5)
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()<0)
 	{
 		//Strafing Left
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()>0.5)
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()>0)
 	{
 		//Moving Forward
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
 	}
 
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()<0.5)
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()<0)
 	{
 		//Moving Back
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
@@ -385,6 +385,8 @@ void CGameApplication::update()
 		m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
 	}
 
+
+
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'R'))
 	{
 		//Change the camera to the player camera
@@ -398,7 +400,7 @@ void CGameApplication::update()
 		}
 
 	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'F'))
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'F'))
 	{	
 		//Change the camera to the debug camera
 		CGameObject * pCameraGO=m_pGameObjectManager->findGameObject("Debug");
@@ -409,6 +411,10 @@ void CGameApplication::update()
 				m_pGameObjectManager->setMainCamera(pCamera);
 			}
 		}
+	}
+	else
+	{
+				m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(0.0f,0.0f,0.0f);
 	};	
 
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
