@@ -102,6 +102,42 @@
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Components\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="AudioListenerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSourceComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CapsuleCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Win32Window.h">
@@ -164,6 +200,42 @@
     <ClInclude Include="Geometry.h">
       <Filter>Components\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="AudioListenerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSourceComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CapsuleCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ScreenSpace.fx">
@@ -195,6 +267,40 @@
     </None>
     <None Include="Environment.fx">
       <Filter>Effects</Filter>
+    </None>
+    <None Include="AudioReferences.txt" />
+    <None Include="background1.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="background2.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="background3.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="failsound.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="LobbyForModel.FBX" />
+    <None Include="menumusic.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="metals002x04.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="metals002x04b.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="misc004.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="RoomforTest.FBX" />
+    <None Include="sensor.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="TESTROOM.FBX" />
+    <None Include="texture.jpg">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>
