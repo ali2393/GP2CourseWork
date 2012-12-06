@@ -316,19 +316,19 @@ bool CGameApplication::initGame()
 	pCamera->setFarClip(1000.0f);
 	pCamera->setNearClip(0.1f);
 	pCameraGameObject->addComponent(pCamera);
-	/*
+	
 	CAudioSourceComponent *pBackground1=new CAudioSourceComponent();
-	pBackground1->setFilename("background2.wav");
+	pBackground1->setFilename("background1.wav");
 	pBackground1->setStream(false);
 	pBackground1->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground1);
 	
 	CAudioSourceComponent *pBackground2=new CAudioSourceComponent();
-	pBackground2->setFilename("background1.wav");
+	pBackground2->setFilename("background2.wav");
 	pBackground2->setStream(false);
 	pBackground2->setLoopCount(-1);
 	pCameraGameObject->addComponent(pBackground2);
-	*/
+	
 	CAudioSourceComponent *pBackground3=new CAudioSourceComponent();
 	pBackground3->setFilename("background3.wav");
 	pBackground3->setStream(false);
@@ -366,8 +366,8 @@ bool CGameApplication::initGame()
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
 	
-//	pBackground1->play();
-//	pBackground2->play();
+	pBackground1->play();
+	pBackground2->play();
 	pBackground3->play();
 	
 	m_Timer.start();
