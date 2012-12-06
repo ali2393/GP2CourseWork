@@ -177,7 +177,7 @@ void CGameApplication::initGameMain()
 	//addMaterial
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setEffectFilename("DirectionalLight.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
 	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
@@ -219,12 +219,13 @@ void CGameApplication::initGameMain()
 
 	pTestCGameObject=new CGameObject;
 	pTestCGameObject->setName("TestPO");
-	pTestCGameObject->getTransform()->setPosition(0.0f,0.0f,5.0f);
+	pTestCGameObject->getTransform()->setPosition(30.0f,0.0f,20.0f);
+	pTestCGameObject->getTransform()->scale(0.5f,0.5f,0.5f);
 
 	//addMaterial
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setEffectFilename("DirectionalLight.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
 	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
@@ -263,12 +264,13 @@ void CGameApplication::initGameMain()
 	pTestGameObject=new CGameObject;
 	pTestGameObject->setName("TestRoom");
 	pTestGameObject->getTransform()->setPosition(-2.5f,-2.5f,10.0f);
-	pTestGameObject->getTransform()->setRotation(110.0f,0.0f,0.0f);
+	pTestGameObject->getTransform()->setRotation(80.0f,0.0f,0.0f);
+	pTestCGameObject->getTransform()->scale(0.5f,0.5f,0.5f);
 
 	//addMaterial
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setEffectFilename("DirectionalLight.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
 	pMaterial->loadDiffuseTexture("metals002x04.jpg");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
@@ -289,11 +291,12 @@ void CGameApplication::initGameMain()
 	//Set the name
 	pTestGameObject->setName("Test");
 	//Position
-	pTestGameObject->getTransform()->setPosition(0.0f,0.0f,10.0f);
+	pTestGameObject->getTransform()->setPosition(20.0f,0.0f,10.0f);
+	pTestCGameObject->getTransform()->scale(2.0f,2.0f,2.0f);
 	//create material
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setEffectFilename("DirectionalLight.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
 	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
 	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
@@ -617,7 +620,7 @@ void CGameApplication::render()
 void CGameApplication::updateGameMain()
 {
 	m_pInGameGUI->Show();
-		CAudioSystem::getInstance().update();
+	CAudioSystem::getInstance().update();
 	CPhysics::getInstance().update(m_Timer.getElapsedTime());
 
 	CInput::getInstance().getJoypad(0 )->update();
