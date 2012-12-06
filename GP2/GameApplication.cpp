@@ -4,6 +4,8 @@
 
 #include "Input.h"
 #include "Keyboard.h"
+#include "Mouse.h"
+#include "Joypad.h"
 
 CGameApplication::CGameApplication(void)
 {
@@ -29,6 +31,8 @@ CGameApplication::~CGameApplication(void)
 		delete m_pGameObjectManager;
 		m_pGameObjectManager=NULL;
 	}
+
+	CPhysics::getInstance().destroy();
 
 	if (m_pRenderTargetView)
 		m_pRenderTargetView->Release();
@@ -57,11 +61,78 @@ bool CGameApplication::init()
 		return false;
 	if (!initGUI())
 		return false;
+	if(!initAudio())
+		return false;
+	if(!initPhysics())
+		return false;
 	if (!initGame())
 		return false;
 	return true;
 }
 
+bool CGameApplication::initAudio()
+{
+	CAudioSystem::getInstance().init();
+	return true;
+}
+
+void CGameApplication::contactPointCallback (const hkpContactPointEvent &event)
+{
+	//Called when a collision occurs
+	hkpRigidBody *pBody=event.getBody(0);
+	hkpRigidBody *pBody2=event.getBody(1);
+
+	//CGameObject *pGameObject1=(CGameObject*)pBody->getUserData();
+	//CGameObject *pGameObject2=(CGameObject*)pBody2->getUserData();
+
+	CGameObject *pTestGameObject=(CGameObject*)pBody->getUserData();
+	CGameObject *pTestCGameObject=(CGameObject*)pBody2->getUserData();
+
+
+	//Do something with the game objects
+	
+	pTestGameObject->getTransform()->setRotation(90.0f,90.0f,90.0f);;
+
+	//m_pGameObjectManager->findGameObject("TestSO")->getTransform()->setRotation(90.0f,90.0f,90.0f);	
+}
+
+//Only used for sample
+void CGameApplication::createBox(float x,float y,float z)
+{
+	//Create Game Object
+	CGameObject *pTestGameObject=new CGameObject();
+	pTestGameObject->getTransform()->setPosition(x,y,z);
+	//Set the name
+	pTestGameObject->setName("TestCube");
+	
+	//create material
+	CMaterialComponent *pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Transform.fx");
+
+	//Create geometry
+	CModelLoader modelloader;
+	//CGeometryComponent *pGeometry=modelloader.loadModelFromFile(m_pD3D10Device,"humanoid.fbx");
+	CMeshComponent *pGeometry=modelloader.createCube(m_pD3D10Device,1.0f,1.0f,1.0f);
+	
+	//create a box collider, this could be any collider
+	CBoxCollider *pBox=new CBoxCollider();
+	//set the size of the box
+	pBox->setExtents(1.0f,1.0f,1.0f);
+	//add collider
+	pTestGameObject->addComponent(pBox);
+
+	//create body
+	CBodyComponent *pBody=new CBodyComponent();
+	pTestGameObject->addComponent(pBody);
+
+	pGeometry->SetRenderingDevice(m_pD3D10Device);
+	//Add component
+	pTestGameObject->addComponent(pMaterial);
+	pTestGameObject->addComponent(pGeometry);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+}
 
 bool CGameApplication::initGUI()
 {
@@ -91,32 +162,153 @@ void CGameApplication::initGameMain()
 
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	pTestGameObject=new CGameObject();
+	pTestGameObject->setName("TestSP");
+	pTestGameObject->getTransform()->setPosition(0.0f,0.0f,10.0f);
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//create game object
+	D3DXVECTOR3 spawnPos=m_pGameObjectManager->findGameObject("TestSP")->getTransform()->getPosition();
+	pTestGameObject=new CGameObject;
+	pTestGameObject->setName("TestSO");
+	pTestGameObject->getTransform()->setPosition(spawnPos.x,spawnPos.y,spawnPos.z);
+
+	//addMaterial
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
+	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pMaterial->loadBumpTexture("armoredrecon_N.png");
+	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
+	pTestGameObject->addComponent(pMaterial);
+
+	//create box
+	CBoxCollider *pBox= new CBoxCollider();
+
+	pBox->setExtents(10.0f,10.0f,10.0f);
+	pTestGameObject->addComponent(pBox);
+
+	//create body make it fixed so no gravity effects it
+	CBodyComponent *pBody=new CBodyComponent();
+	pBody->setFixed(false);
+	pTestGameObject->addComponent(pBody);
+
+
+	//Audio (For Sensor)
+	CAudioSourceComponent *pSensor=new CAudioSourceComponent();
+	pSensor->setFilename("sensor.wav");
+	pSensor->setStream(false);
+	pTestGameObject->addComponent(pSensor);
+
+	//Create Mesh
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestGameObject->addComponent(pMesh);
+	
+	//pTestGameObject->addComponent(pCMesh);
+
+
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//create game object
+	CGameObject *pTestCGameObject=new CGameObject();
+
+	pTestCGameObject=new CGameObject;
+	pTestCGameObject->setName("TestPO");
+	pTestCGameObject->getTransform()->setPosition(0.0f,0.0f,5.0f);
+
+	//addMaterial
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
+	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pMaterial->loadBumpTexture("armoredrecon_N.png");
+	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
+	pTestCGameObject->addComponent(pMaterial);
+
+	
+	//create box
+	CBoxCollider *pBox2= new CBoxCollider();
+	pBox2->setExtents(10.0f,10.0f,10.0f);
+	pTestCGameObject->addComponent(pBox2);
+	
+
+
+	//create body make it fixed so no gravity effects it
+	CBodyComponent *pBody2=new CBodyComponent();
+	pBody2->setFixed(true);
+	pTestCGameObject->addComponent(pBody2);
+
+
+	//Create Mesh
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestCGameObject->addComponent(pMesh);
+
+	//CMeshCollider *pMeshC = new CMeshCollider();
+	//pTestGameObject->addComponent(pMeshC);
+
+
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestCGameObject);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//create game object
+	pTestGameObject=new CGameObject;
+	pTestGameObject->setName("TestRoom");
+	pTestGameObject->getTransform()->setPosition(-2.5f,-2.5f,10.0f);
+	pTestGameObject->getTransform()->setRotation(110.0f,0.0f,0.0f);
+
+	//addMaterial
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("Parallax.fx");
+	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
+	pMaterial->loadDiffuseTexture("metals002x04.jpg");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pMaterial->loadBumpTexture("metals002x04b.jpg");
+	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
+	pTestGameObject->addComponent(pMaterial);
+	//Create Mesh
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"LobbyForModel.fbx");
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestGameObject->addComponent(pMesh);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	//Create Game Object
 	pTestGameObject=new CGameObject();
 	//Set the name
 	pTestGameObject->setName("Test");
 	//Position
 	pTestGameObject->getTransform()->setPosition(0.0f,0.0f,10.0f);
-	pTestGameObject->getTransform()->setScale(0.1f,0.1f,0.1f);
 	//create material
 	pMaterial=new CMaterialComponent();
 	pMaterial->SetRenderingDevice(m_pD3D10Device);
-	pMaterial->setEffectFilename("DirectionalLight.fx");
+	pMaterial->setEffectFilename("Parallax.fx");
 	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.2f,0.2f,0.2f,1.0f));
-	pMaterial->loadDiffuseTexture("Box001Diffuse.png");
-	//pMaterial->loadSpecularTexture("armoredrecon_spec.png");
-	//pMaterial->loadBumpTexture("armoredrecon_N.png");
-	//pMaterial->loadParallaxTexture("armoredrecon_Height.png");
+	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pMaterial->loadBumpTexture("armoredrecon_N.png");
+	pMaterial->loadParallaxTexture("armoredrecon_Height.png");
 	pTestGameObject->addComponent(pMaterial);
 
 	//Create Mesh
-	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"BriansBox.fbx");
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
 	//CMeshComponent *pMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
 	pMesh->SetRenderingDevice(m_pD3D10Device);
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
-
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	pTestGameObject=new CGameObject();
 	//Set the name
 	pTestGameObject->setName("Test2");
@@ -138,16 +330,41 @@ void CGameApplication::initGameMain()
 	pTestGameObject->addComponent(pMesh);
 	//add the game object
 	m_pGameObjectManager->addGameObject(pTestGameObject);
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	pTestGameObject=new CGameObject();
+	//Set the name
+	pTestGameObject->setName("Test3");
+	//Position
+	pTestGameObject->getTransform()->setPosition(-5.0f,0.0f,10.0f);
+	//create material
+	pMaterial=new CMaterialComponent();
+	pMaterial->SetRenderingDevice(m_pD3D10Device);
+	pMaterial->setEffectFilename("DirectionalLight.fx");
+	pMaterial->setAmbientMaterialColour(D3DXCOLOR(0.5f,0.5f,0.5f,1.0f));
+	pMaterial->loadDiffuseTexture("armoredrecon_diff.png");
+	pMaterial->loadSpecularTexture("armoredrecon_spec.png");
+	pTestGameObject->addComponent(pMaterial);
 
 	//Create Mesh
-	CGameObject *pCameraGameObject=new CGameObject();
-	pCameraGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
-	pCameraGameObject->setName("Camera");
+	pMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
+	//CMeshComponent *pMesh=modelloader.createCube(m_pD3D10Device,10.0f,10.0f,10.0f);
+	pMesh->SetRenderingDevice(m_pD3D10Device);
+	pTestGameObject->addComponent(pMesh);
+	//add the game object
+	m_pGameObjectManager->addGameObject(pTestGameObject);
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//A Player Game Object
+	CGameObject *pPlayerGameObject=new CGameObject();
+	//Setting the name to Player
+	pPlayerGameObject->setName("Player");
+	pPlayerGameObject->getTransform()->setPosition(0.0f,0.0f,-5.0f);
+
+	// setting Viewport
 	D3D10_VIEWPORT vp;
 	UINT numViewports=1;
 	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
-
+	//Creating the Camera for the main player
 	CCameraComponent *pCamera=new CCameraComponent();
 	pCamera->setUp(0.0f,1.0f,0.0f);
 	pCamera->setLookAt(0.0f,0.0f,0.0f);
@@ -155,10 +372,72 @@ void CGameApplication::initGameMain()
 	pCamera->setAspectRatio((float)(vp.Width/vp.Height));
 	pCamera->setFarClip(1000.0f);
 	pCamera->setNearClip(0.1f);
-	pCameraGameObject->addComponent(pCamera);
+	//pCamera->disable();
+	pCamera->setParent(pPlayerGameObject);
+	pPlayerGameObject->addComponent(pCamera);
 
-	m_pGameObjectManager->addGameObject(pCameraGameObject);
+	CAudioSourceComponent *pBackground1=new CAudioSourceComponent();
+	pBackground1->setFilename("background2.wav");
+	pBackground1->setStream(false);
+	pBackground1->setLoopCount(-1);
+	pPlayerGameObject->addComponent(pBackground1);
+	
+	CAudioSourceComponent *pBackground2=new CAudioSourceComponent();
+	pBackground2->setFilename("background1.wav");
+	pBackground2->setStream(false);
+	pBackground2->setLoopCount(-1);
+	pPlayerGameObject->addComponent(pBackground2);
 
+	CAudioSourceComponent *pBackground3=new CAudioSourceComponent();
+	pBackground3->setFilename("background3.wav");
+	pBackground3->setStream(false);
+	pBackground3->setLoopCount(-1);
+	pPlayerGameObject->addComponent(pBackground3);
+	
+
+	CAudioListenerComponent *pListener=new CAudioListenerComponent();
+	pPlayerGameObject->addComponent(pListener);
+
+	//Creating another Component to add to the game object
+	CMaterialComponent *pPlayerModel = new CMaterialComponent();
+	pPlayerModel=new CMaterialComponent();
+	pPlayerModel->SetRenderingDevice(m_pD3D10Device);
+	pPlayerModel->setEffectFilename("DirectionalLight.fx");
+	pPlayerModel->setAmbientMaterialColour(D3DXCOLOR(0.5f,0.5f,0.5f,1.0f));
+	pPlayerModel->loadDiffuseTexture("armoredrecon_diff.png");
+	pPlayerModel->loadSpecularTexture("armoredrecon_spec.png");
+	pPlayerGameObject->addComponent(pPlayerModel);
+
+	//Create Mesh
+	CMeshComponent *pPlayerMesh=modelloader.loadModelFromFile(m_pD3D10Device,"armoredrecon.fbx");
+	pPlayerMesh->SetRenderingDevice(m_pD3D10Device);
+	pPlayerGameObject->addComponent(pPlayerMesh);
+	//Adding the Game object
+	m_pGameObjectManager->addGameObject(pPlayerGameObject);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Debug Camera Set up
+	CGameObject *pDeBugGameObject=new CGameObject();
+	pDeBugGameObject->setName("Debug");
+	pDeBugGameObject->getTransform()->setPosition(0.0f,30.0f,-30.0f);
+
+	D3D10_VIEWPORT Db;
+	UINT numDbViewports=1;
+	m_pD3D10Device->RSGetViewports(&numViewports,&vp);
+
+	CCameraComponent *pDebugCamera=new CCameraComponent();
+	pDebugCamera->setUp(0.0f,1.0f,0.0f);
+	pDebugCamera->setLookAt(0.0f,0.0f,0.0f);
+	pDebugCamera->setFOV(D3DX_PI*0.25f);
+	pDebugCamera->setAspectRatio((float)(vp.Width/vp.Height));
+	pDebugCamera->setFarClip(1000.0f);
+	pDebugCamera->setNearClip(0.1f);
+	pDeBugGameObject->addComponent(pDebugCamera);
+	m_pGameObjectManager->addGameObject(pDeBugGameObject);
+	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	CGameObject *pLightGameObject=new CGameObject();
 	pLightGameObject->setName("DirectionalLight");
 
@@ -167,10 +446,27 @@ void CGameApplication::initGameMain()
 	pLightGameObject->addComponent(pLightComponent);
 
 	m_pGameObjectManager->addGameObject(pLightGameObject);
-
+	
 	m_pGameObjectManager->setMainLight(pLightComponent);
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//start position
+	float startY=10.0f;
+	for (int i=0;i<10;i++)
+	{
+		//call create bi=ox
+		createBox(0.0f,(10.0f*i)+startY,0.0f);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	//init, this must be called after we have created all game objects
 	m_pGameObjectManager->init();
+
+	pBackground1->play();
+	pBackground2->play();
+	pBackground3->play();
 }
 
 
@@ -209,7 +505,7 @@ void CGameApplication::initMenu()
 	pCameraGameObject->addComponent(pCamera);
 
 	m_pGameObjectManager->addGameObject(pCameraGameObject);
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	m_pMenu =  CGUIManager::getInstance().loadGUI("menu.rml");
 	m_pInGameGUI = CGUIManager::getInstance().loadGUI("game.rml");
 	m_pPause = CGUIManager::getInstance().loadGUI("pause.rml");
@@ -321,29 +617,94 @@ void CGameApplication::render()
 void CGameApplication::updateGameMain()
 {
 	m_pInGameGUI->Show();
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W'))
+		CAudioSystem::getInstance().update();
+	CPhysics::getInstance().update(m_Timer.getElapsedTime());
+
+	CInput::getInstance().getJoypad(0 )->update();
+
+	m_bUsingJoypad=CInput::getInstance().getJoypad(0)->isConnected();
+
+	//Moving the mouse about
+	CCameraComponent *pCamera=m_pGameObjectManager->getMainCamera();
+	if (pCamera)
+	{	
+		//getting the mouses position
+		float yaw=CInput::getInstance().getMouse()->getRelativeMouseX();
+		float pitch=CInput::getInstance().getMouse()->getRelativeMouseY();
+		if (m_bUsingJoypad){
+			//if we are using a joypad
+			yaw=CInput::getInstance().getJoypad(0)->getRightThumbStickX();
+			pitch=CInput::getInstance().getJoypad(0)->getRightThumbStickY();
+		}
+		//Pitching and Yaw
+		pCamera->yaw(yaw*m_Timer.getElapsedTime());
+		pCamera->pitch(-pitch*m_Timer.getElapsedTime());
+
+	};
+
+	//Input D A W S R.
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D') || (CInput::getInstance().getJoypad(0)->getLeftThumbStickX()>0 && m_bUsingJoypad) )
 	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(m_Timer.getElapsedTime(),0.0f,0.0f);
+		//Strafing Right
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*3,0.0f,0.0f);
 	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S'))
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A') || CInput::getInstance().getJoypad(0)->getLeftThumbStickX()<0)
 	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(m_Timer.getElapsedTime()*-1,0.0f,0.0f);
+		//Strafing Left
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(m_Timer.getElapsedTime()*-3,0.0f,0.0f);
 	}
-	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'A'))
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'W') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()>0)
 	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(0.0f,m_Timer.getElapsedTime(),0.0f);
+		//Moving Forward
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
 	}
-	else if (CInput::getInstance().getKeyboard()->isKeyDown((int)'D'))
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'S') || CInput::getInstance().getJoypad(0)->getLeftThumbStickY()<0)
 	{
-		//play sound
-		CTransformComponent * pTransform=m_pGameObjectManager->findGameObject("Test")->getTransform();
-		pTransform->rotate(0.0f,m_Timer.getElapsedTime()*-1,0.0f);
+		//Moving Back
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->translate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
+	}
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'E'))
+	{
+		//Rotate on the z axis left
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(0.0f,0.0f,m_Timer.getElapsedTime()*3);
+	}	
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'Q'))
+	{
+		//Rotate on the z axis right
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(0.0f,0.0f,m_Timer.getElapsedTime()*-3);
+	}
+
+
+
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'R'))
+	{
+		//Change the camera to the player camera
+		CGameObject * pCameraGO=m_pGameObjectManager->findGameObject("Player");
+		if (pCameraGO){
+			CCameraComponent *pCamera=(CCameraComponent *)pCameraGO->getComponent("CameraComponent");
+			if (pCamera)
+			{
+				m_pGameObjectManager->setMainCamera(pCamera);
+			}
+		}
+
+	}
+	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'F'))
+	{	
+		//Change the camera to the debug camera
+		CGameObject * pCameraGO=m_pGameObjectManager->findGameObject("Debug");
+		if (pCameraGO){
+			CCameraComponent *pCamera=(CCameraComponent *)pCameraGO->getComponent("CameraComponent");
+			if (pCamera)
+			{
+				m_pGameObjectManager->setMainCamera(pCamera);
+			}
+		}
 	}
 	if (CInput::getInstance().getKeyboard()->isKeyDown((int)'P'))
 		{
@@ -354,6 +715,10 @@ void CGameApplication::updateGameMain()
 				m_pPause->Show();
 			}
 		}
+	else
+	{
+		m_pGameObjectManager->findGameObject("Player")->getTransform()->rotate(0.0f,0.0f,0.0f);
+	};	
 }
 
 void CGameApplication::updateMenu()
@@ -406,6 +771,19 @@ void CGameApplication::update()
 	
 	m_pGameObjectManager->update(m_Timer.getElapsedTime());
 
+}
+
+bool CGameApplication::initPhysics()
+{
+	hkVector4 Gravity=hkVector4(0.0f,-9.8f,0.0f);
+
+	CPhysics::getInstance().init();
+	//Add the Game Application
+	CPhysics::getInstance().getPhysicsWorld()->addContactListener(this);
+
+	CPhysics::getInstance().getPhysicsWorld()->setGravity(Gravity);
+
+	return true;
 }
 
 bool CGameApplication::initInput()

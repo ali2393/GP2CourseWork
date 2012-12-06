@@ -77,12 +77,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioListenerComponent.cpp" />
+    <ClCompile Include="AudioSourceComponent.cpp" />
+    <ClCompile Include="AudioSystem.cpp" />
+    <ClCompile Include="BaseCollider.cpp" />
+    <ClCompile Include="BodyComponent.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
+    <ClCompile Include="CapsuleCollider.cpp" />
     <ClCompile Include="DirectionalLightComponent.cpp" />
     <ClCompile Include="GameApplication.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="GeometryComponent.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="GUISystemInterface.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -91,15 +99,26 @@
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
+    <ClCompile Include="MeshCollider.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderInterfaceDirectx10.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Win32Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioListenerComponent.h" />
+    <ClInclude Include="AudioSourceComponent.h" />
+    <ClInclude Include="AudioSystem.h" />
+    <ClInclude Include="BaseCollider.h" />
+    <ClInclude Include="BodyComponent.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="CapsuleCollider.h" />
     <ClInclude Include="D3D10Effect.h" />
     <ClInclude Include="DefaultEffect.h" />
     <ClInclude Include="DirectionLightComponent.h" />
@@ -107,6 +126,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GeometryComponent.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="GUISystemInterface.h" />
     <ClInclude Include="IComponent.h" />
@@ -115,10 +135,14 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="LightComponent.h" />
     <ClInclude Include="MaterialComponent.h" />
+    <ClInclude Include="MeshCollider.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderInterfaceDirectx10.h" />
+    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Vertex.h" />
@@ -136,13 +160,18 @@
     <None Include="Environment.fx" />
     <None Include="game.rml" />
     <None Include="invader.rcss" />
+    <None Include="LobbyForModel.FBX" />
     <None Include="menu.rml" />
+    <None Include="metals002x04.jpg" />
+    <None Include="metals002x04b.jpg" />
+    <None Include="misc004.jpg" />
     <None Include="Parallax.fx" />
     <None Include="pause.rml" />
     <None Include="rkt.rcss" />
     <None Include="ScreenSpace.fx" />
     <None Include="Specular.fx" />
     <None Include="Texture.fx" />
+    <None Include="texture.jpg" />
     <None Include="Transform.fx" />
     <None Include="window.rml" />
   </ItemGroup>

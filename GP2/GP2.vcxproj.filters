@@ -34,18 +34,6 @@
     <Filter Include="Input">
       <UniqueIdentifier>{6144b435-887c-41ed-8a2a-bb34e6a68c34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{a24d86c9-2c0e-42d5-acae-3b4ab14be046}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Physics">
-      <UniqueIdentifier>{6de5861c-04ab-45e7-94d8-1965a742cb3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Audio">
-      <UniqueIdentifier>{0fc6236f-a738-4449-afaa-6dde293efbb3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Audio">
-      <UniqueIdentifier>{3849aec2-4cb8-4493-829f-d1cd4068110d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components\Lights">
       <UniqueIdentifier>{62f9b72a-3554-4123-8ad8-ad8f525abc01}</UniqueIdentifier>
     </Filter>
@@ -116,6 +104,42 @@
     </ClCompile>
     <ClCompile Include="RenderInterfaceDirectx10.cpp">
       <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CapsuleCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioListenerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSourceComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +215,42 @@
     <ClInclude Include="D3D10Effect.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="BaseCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CapsuleCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioListenerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSourceComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ScreenSpace.fx">
@@ -246,6 +306,19 @@
     </None>
     <None Include="game.rml">
       <Filter>GUIScripts</Filter>
+    </None>
+    <None Include="LobbyForModel.FBX" />
+    <None Include="metals002x04.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="metals002x04b.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="misc004.jpg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="texture.jpg">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>
